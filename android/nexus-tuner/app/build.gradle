@@ -1,0 +1,58 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Número da versão: no GitHub vem do número da execução; no PC fica 1.
+def vCode = (System.getenv('NT_VERSION_CODE') ?: '1').toInteger()
+def keystorePath = System.getenv('NT_KEYSTORE')
+
+android {
+    namespace 'com.nexusworksdigital.nexustuner'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId 'com.nexusworksdigital.nexustuner'
+        minSdk 24
+        targetSdk 36
+        versionCode vCode
+        versionName "1.0.${vCode}"
+    }
+
+    signingConfigs {
+        release {
+            if (keystorePath) {
+                storeFile file(keystorePath)
+                storePassword System.getenv('NT_KEYSTORE_PASSWORD')
+                keyAlias System.getenv('NT_KEY_ALIAS') ?: 'nexustuner'
+                keyPassword System.getenv('NT_KEY_PASSWORD') ?: System.getenv('NT_KEYSTORE_PASSWORD')
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (keystorePath) signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core:1.13.1'
+    implementation 'androidx.webkit:webkit:1.11.0'
+}
+
+// Copia o app do site (/nexus-tuner/app) para dentro do APK antes de compilar.
+def webApp = file("${rootDir}/../../nexus-tuner/app")
+tasks.register('copyWebApp', Sync) {
+    from(webApp) { exclude 'sw.js' }
+    into "${projectDir}/src/main/assets/www"
+}
+preBuild.dependsOn 'copyWebApp'

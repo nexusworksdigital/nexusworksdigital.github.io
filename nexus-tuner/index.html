@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nexus Tuner – Afinador de violão, guitarra e baixo + metrônomo</title>
+  <meta name="description" content="Afinador grátis e preciso para violão, guitarra e baixo, com metrônomo de 9 sons, afinações alternativas, gerador de tons e tabela de notas. Funciona no navegador e no Android, sem anúncios.">
+  <link rel="canonical" href="https://nexusworksdigital.github.io/nexus-tuner/">
+  <meta name="keywords" content="afinador, afinador de violão, afinador de guitarra, afinador de baixo, metrônomo, drop d, afinação, app de música, tuner">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Nexus Tuner – Afinador e metrônomo">
+  <meta property="og:description" content="Afine violão, guitarra e baixo em segundos. Metrônomo com 9 sons, afinações alternativas e ferramentas. Grátis e sem anúncios.">
+  <meta property="og:url" content="https://nexusworksdigital.github.io/nexus-tuner/">
+  <meta property="og:image" content="https://nexusworksdigital.github.io/assets/tuner_capa.jpg">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="img/favicon.png">
+  <link rel="stylesheet" href="../assets/estilo.css?v=4">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"Nexus Tuner","applicationCategory":"MultimediaApplication","operatingSystem":"Android, Web","offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},"publisher":{"@type":"Organization","name":"Nexus Works Digital"}}
+  </script>
+  <style>
+    /* tema do Nexus Tuner: laranja */
+    :root { --azul:#FF6A00; --ciano:#FF8F2A; }
+    body { background:
+      radial-gradient(1100px 560px at 15% -10%, rgba(255,106,0,.20), transparent 60%),
+      radial-gradient(900px 500px at 100% 10%, rgba(34,209,99,.07), transparent 60%), #07090c; }
+    .hero img.logo { width:min(170px,42vw); filter: drop-shadow(0 16px 50px rgba(255,106,0,.45)); }
+    .hero .wm { margin-top:18px; line-height:1 }
+    .hero h1 { max-width:760px; margin-left:auto; margin-right:auto }
+    .hero .wm b { display:block; font-family: Inter, system-ui, sans-serif; font-weight:800; font-size:clamp(38px,6vw,56px); letter-spacing:6px;
+      background: linear-gradient(180deg,#fff 20%,#b9c0c9 60%,#7d8692); -webkit-background-clip:text; background-clip:text; color:transparent }
+    .hero .wm span { display:block; color:#FF6A00; font-weight:700; letter-spacing:12px; font-size:16px; margin-top:8px; padding-left:12px }
+    .botao { background: linear-gradient(135deg, #FF9A3A, #FF6A00); box-shadow: 0 8px 30px rgba(255,106,0,.35); }
+    .botao:hover { box-shadow: 0 12px 36px rgba(255,106,0,.5); }
+    .botao.desligado { background: var(--cartao); border:1px solid var(--borda); box-shadow:none; color: var(--sec); cursor: default; }
+    .botao.desligado:hover { transform:none; }
+    .telas { display:flex; gap:18px; overflow-x:auto; padding:6px 4px 18px; scroll-snap-type:x mandatory; justify-content:flex-start }
+    @media (min-width: 1000px) { .telas { justify-content:center } .telas figure { width:196px } }
+    .telas figure { margin:0; flex:none; width:230px; scroll-snap-align:center; text-align:center }
+    .telas img { width:100%; border-radius:26px; display:block; box-shadow: 0 0 0 5px #161a20, 0 20px 50px rgba(0,0,0,.6) }
+    .telas figcaption { color: var(--sec); font-size:14px; margin-top:12px }
+    ol.passos li::before { background: linear-gradient(135deg, #FF9A3A, #FF6A00); }
+    .duas { display:grid; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); gap:16px }
+    .destaque { border-left-color: #FF6A00; }
+  </style>
+</head>
+<body>
+  <header class="topo">
+    <div class="conteudo">
+      <a class="marca" href="../"><span class="nwd">NEXUS <b>WORKS</b> DIGITAL</span></a>
+      <nav>
+        <a href="../#apps" class="ocultar">Apps</a>
+        <a href="#recursos">Recursos</a>
+        <a href="#baixar">Baixar</a>
+      </nav>
+    </div>
+  </header>
+  <div class="trilha conteudo"><a href="../">Início</a> › <a href="../#apps">Apps</a> › <span>Nexus Tuner</span></div>
+
+  <main>
+    <div class="conteudo hero">
+      <img class="logo" src="img/icone.png" alt="Nexus Tuner">
+      <div class="wm"><b>NEXUS</b><span>TUNER</span></div>
+      <h1>Afine seu violão, guitarra e baixo em segundos.</h1>
+      <p class="sub">Afinador preciso, metrônomo com 9 sons e ferramentas para músicos. Grátis, sem anúncios e funciona até sem internet.</p>
+      <div class="botoes" id="baixar">
+        <a class="botao" href="app/">▶ Usar agora <small>No navegador do celular ou PC</small></a>
+        <a class="botao" href="https://github.com/nexusworksdigital/nexusworksdigital.github.io/releases/download/nexus-tuner/NexusTuner.apk">📱 Baixar para Android <small>App (APK)</small></a>
+        <span class="botao desligado">Google Play <small>Em breve</small></span>
+      </div>
+      <p class="nota">Grátis · Sem anúncios · O áudio do microfone nunca sai do seu aparelho</p>
+    </div>
+
+    <section class="conteudo">
+      <div class="telas">
+        <figure><img src="img/tela-afinador.jpg" alt="Afinador analógico mostrando a corda Mi afinada" loading="lazy"><figcaption>Afinador</figcaption></figure>
+        <figure><img src="img/tela-metronomo.jpg" alt="Metrônomo com 120 BPM e escolha de sons" loading="lazy"><figcaption>Metrônomo com 9 sons</figcaption></figure>
+        <figure><img src="img/tela-afinacoes.jpg" alt="Lista de afinações alternativas" loading="lazy"><figcaption>Afinações alternativas</figcaption></figure>
+        <figure><img src="img/tela-tabela.jpg" alt="Tabela de notas no braço do instrumento" loading="lazy"><figcaption>Tabela de notas</figcaption></figure>
+        <figure><img src="img/tela-config.jpg" alt="Configurações com tema e estilo do afinador" loading="lazy"><figcaption>Do seu jeito</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="conteudo" id="recursos">
+      <h2>Recursos</h2>
+      <p class="intro">Tudo que você precisa para afinar e praticar, num app só.</p>
+      <div class="grade">
+        <div class="cartao"><div class="icone">🎯</div><h3>Afinação precisa</h3><p>Detecta a nota em tempo real com precisão de até ±1 cent. Reconhece sozinho qual corda você tocou.</p></div>
+        <div class="cartao"><div class="icone">🎸</div><h3>Violão, guitarra e baixo</h3><p>Baixo de 4 e 5 cordas, modo cromático para qualquer instrumento e o tom de referência de cada corda.</p></div>
+        <div class="cartao"><div class="icone">🎚️</div><h3>Afinações alternativas</h3><p>Drop D, Drop C, Drop B, Open G, Open D, DADGAD, meio tom abaixo e mais. Crie e salve as suas.</p></div>
+        <div class="cartao"><div class="icone">🥁</div><h3>Metrônomo com 9 sons</h3><p>Clássico, madeira, clave, cowbell, chimbal, bateria, mecânico e outros. Compassos, acento e tap tempo.</p></div>
+        <div class="cartao"><div class="icone">🧰</div><h3>Ferramentas</h3><p>Gerador de tons, tabela de notas no braço, calibração do Lá (432 a 446 Hz) e histórico das afinações.</p></div>
+        <div class="cartao"><div class="icone">🎨</div><h3>Do seu jeito</h3><p>Três estilos de mostrador (analógico, digital e onda), tema claro ou escuro e ajuste de precisão e sensibilidade.</p></div>
+      </div>
+    </section>
+
+    <section class="conteudo" id="como">
+      <h2>Como afinar</h2>
+      <p class="intro">Leva menos de um minuto.</p>
+      <ol class="passos">
+        <li><b>Escolha o instrumento</b> <span>e a afinação: Guitarra, Violão, Baixo ou Cromático.</span></li>
+        <li><b>Toque em “Ouvir”</b> <span>e permita o microfone. O áudio é analisado no próprio aparelho e não é gravado.</span></li>
+        <li><b>Toque uma corda solta.</b> <span>O app reconhece a corda sozinho. Se o ponteiro estiver vermelho, aperte (↑) ou afrouxe (↓) a tarraxa.</span></li>
+        <li><b>Ficou verde?</b> <span>A corda está afinada e ganha um ✓. Passe para a próxima.</span></li>
+      </ol>
+    </section>
+
+    <section class="conteudo" id="instalar">
+      <h2>Instalar no celular</h2>
+      <p class="intro">Escolha o jeito que preferir.</p>
+      <div class="duas">
+        <div class="cartao"><div class="icone">🤖</div><h3>Android (APK)</h3><p>Baixe o <i>NexusTuner.apk</i> no botão acima e abra o arquivo. Se pedir, permita “instalar apps desta fonte”.</p></div>
+        <div class="cartao"><div class="icone">🌐</div><h3>Pelo navegador (Android e iPhone)</h3><p>Abra <a href="app/">o app no navegador</a>. No Chrome toque em ⋮ › <i>Adicionar à tela inicial</i>; no iPhone (Safari) toque em Compartilhar › <i>Adicionar à Tela de Início</i>. Ele vira um ícone e funciona offline.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="conteudo">
+      <div>
+        <a href="privacidade.html">Política de privacidade</a>
+        <a href="mailto:nexusworksdigital@gmail.com">Contato</a>
+      </div>
+      <div>© 2026 <a href="../">Nexus Works Digital</a> · Nexus Tuner</div>
+    </div>
+  </footer>
+</body>
+</html>

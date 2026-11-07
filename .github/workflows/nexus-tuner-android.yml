@@ -1,0 +1,89 @@
+name: Nexus Tuner – Android (APK + AAB)
+
+# Roda sozinho quando o app (nexus-tuner/app) ou o projeto Android mudam,
+# ou manualmente em Actions › "Nexus Tuner – Android" › Run workflow.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'nexus-tuner/app/**'
+      - 'android/nexus-tuner/**'
+      - '.github/workflows/nexus-tuner-android.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nexus-tuner-android
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Chave de assinatura (segredos do repositório)
+        env:
+          NT_KEYSTORE_B64: ${{ secrets.NT_KEYSTORE_B64 }}
+        run: |
+          if [ -n "$NT_KEYSTORE_B64" ]; then
+            echo "$NT_KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/nexus-tuner.jks"
+            echo "NT_KEYSTORE=$RUNNER_TEMP/nexus-tuner.jks" >> "$GITHUB_ENV"
+            echo "SIGNED=1" >> "$GITHUB_ENV"
+            echo "Chave encontrada: o APK e o AAB serão assinados e publicados."
+          else
+            echo "::warning::Segredos NT_KEYSTORE_B64 / NT_KEYSTORE_PASSWORD não configurados. Só o APK de teste (debug) será gerado, sem publicar no site."
+          fi
+
+      - name: Compilar
+        working-directory: android/nexus-tuner
+        env:
+          NT_KEYSTORE_PASSWORD: ${{ secrets.NT_KEYSTORE_PASSWORD }}
+          NT_VERSION_CODE: ${{ github.run_number }}
+        run: |
+          chmod +x gradlew
+          if [ "$SIGNED" = "1" ]; then
+            ./gradlew --no-daemon --stacktrace assembleRelease bundleRelease
+          else
+            ./gradlew --no-daemon --stacktrace assembleDebug
+          fi
+
+      - name: Separar arquivos
+        run: |
+          mkdir -p dist
+          OUT=android/nexus-tuner/app/build/outputs
+          if [ "$SIGNED" = "1" ]; then
+            cp $OUT/apk/release/app-release.apk dist/NexusTuner.apk
+            cp $OUT/bundle/release/app-release.aab dist/NexusTuner.aab
+          else
+            cp $OUT/apk/debug/app-debug.apk dist/NexusTuner-teste.apk
+          fi
+          ls -la dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NexusTuner-${{ github.run_number }}
+          path: dist/
+
+      - name: Publicar no site (release "nexus-tuner")
+        if: env.SIGNED == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          V="1.0.${{ github.run_number }}"
+          NOTES="Nexus Tuner $V — afinador, metrônomo e ferramentas. Instale o NexusTuner.apk no Android. O NexusTuner.aab é o pacote para a Google Play."
+          if gh release view nexus-tuner >/dev/null 2>&1; then
+            gh release upload nexus-tuner dist/NexusTuner.apk dist/NexusTuner.aab --clobber
+            gh release edit nexus-tuner --title "Nexus Tuner $V" --notes "$NOTES"
+          else
+            gh release create nexus-tuner dist/NexusTuner.apk dist/NexusTuner.aab --title "Nexus Tuner $V" --notes "$NOTES"
+          fi

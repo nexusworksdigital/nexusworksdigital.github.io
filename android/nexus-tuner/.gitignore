@@ -1,0 +1,10 @@
+.gradle/
+build/
+app/build/
+local.properties
+.idea/
+*.iml
+*.jks
+*.keystore
+# copiado automaticamente de /nexus-tuner/app na hora de compilar
+app/src/main/assets/
