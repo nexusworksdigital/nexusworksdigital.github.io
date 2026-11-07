@@ -176,6 +176,13 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        // Ao voltar para o app: liga o microfone de novo (se estiver ativado nos ajustes)
+        if (web != null) web.evaluateJavascript("window.nexusResume && window.nexusResume()", null);
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (web != null) web.saveState(outState);

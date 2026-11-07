@@ -497,7 +497,7 @@ const INSTR = [
 
 // ================= Estado =================
 const DEF = {
-  theme:'dark', precision:3, a4:440, sens:'media', autoDetect:true, refSound:true, vibrate:true, style:'analog',
+  theme:'dark', precision:3, a4:440, sens:'media', autoDetect:true, refSound:true, vibrate:true, autoMic:true, style:'analog',
   instrument:'guitarra', lastInst:'guitarra', tuning:{six:'padrao', bass:'bpadrao'}, fav:['padrao','dropd'], custom:[], history:[],
   met:{bpm:120, beats:4, den:4, vol:70, accent:true, sound:'classic'}
 };
@@ -587,7 +587,7 @@ async function pluck(midi, dur=2.2){
       const g = ctx.createGain(); g.gain.value = a * .45; o.connect(g).connect(lp); o.start(t); o.stop(t + dur + .05);
     });
     lp.connect(out).connect(ctx.destination);
-    refUntil = performance.now() + dur * 1000;
+    refUntil = performance.now() + dur * 1000 + 250;
   } catch(e) {}
 }
 
@@ -616,15 +616,40 @@ function yin(x, sr, fMin){
   return { f: sr / bt, clarity: 1 - d[tau] };
 }
 
-async function startMic(){
+// ---------- Microfone sempre ativo ----------
+let userPaused = false, autoBlocked = false, micStarting = false;
+function ctxNoWait(){
+  if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+  if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+  if (!ctx.__nt) { ctx.__nt = 1; ctx.addEventListener('statechange', () => { if (source === 'mic' && !haveSig) micIdle(); }); }
+}
+const needsTap = () => ctx && ctx.state !== 'running';
+// alguns navegadores (iPhone) só liberam o áudio depois de um toque na tela
+document.addEventListener('pointerdown', () => { if (ctx && ctx.state === 'suspended') ctx.resume().catch(() => {}); }, true);
+function micIdle(){
+  if (needsTap()) idle('TOQUE NA TELA', 'para ativar o microfone');
+  else idle('OUVINDO…', 'toque uma corda');
+}
+async function autoStart(){
+  if (!S.autoMic || userPaused || autoBlocked || source || micStarting || document.hidden) return;
+  try { if (navigator.permissions && navigator.permissions.query) { const p = await navigator.permissions.query({name:'microphone'}); if (p.state === 'denied') { autoBlocked = true; return; } } } catch(e) {}
+  startMic(true);
+}
+async function startMic(auto){
+  if (micStarting) return;
+  micStarting = true;
   try {
-    await ac(); setupAnalyser();
+    if (auto) ctxNoWait(); else await ac();
+    setupAnalyser();
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw Object.assign(new Error(), {name:'NotSupportedError'});
     micStream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}});
     stopDemo();
     micNode = ctx.createMediaStreamSource(micStream); micNode.connect(analyser);
     setSource('mic');
-  } catch(err) { micError(err); }
+  } catch(err) {
+    if (auto) { autoBlocked = true; setSource(null); }  // sem incomodar: fica o botão Ouvir
+    else micError(err);
+  } finally { micStarting = false; }
 }
 function stopMic(){ if (micNode) { try { micNode.disconnect(); } catch(e){} micNode = null; } if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; } }
 const embedded = (() => { try { return window.self !== window.top; } catch(e) { return true; } })();
@@ -672,7 +697,8 @@ function setSource(s){
   source = s;
   renderListenBtn();
   if (!s) idle('AFINADOR PARADO', 'toque em Ouvir para começar');
-  else idle(s === 'mic' ? 'OUVINDO…' : 'MODO DEMO', s === 'mic' ? 'toque uma corda' : 'gire a tarraxa simulada');
+  else if (s === 'mic') micIdle();
+  else idle('MODO DEMO', 'gire a tarraxa simulada');
 }
 function renderListenBtn(){
   const b = $('listenBtn');
@@ -680,8 +706,14 @@ function renderListenBtn(){
   b.innerHTML = source ? svg('stop') + 'Parar' : svg('mic') + 'Ouvir';
   $('demoBtn').textContent = source === 'demo' ? 'Sair' : 'Demo';
 }
-$('listenBtn').onclick = () => { if (source) { stopMic(); stopDemo(); setSource(null); } else startMic(); };
-$('demoBtn').onclick = () => { if (source === 'demo') { stopDemo(); setSource(null); } else startDemo(); };
+$('listenBtn').onclick = () => {
+  if (source) { userPaused = true; stopMic(); stopDemo(); setSource(null); }
+  else { userPaused = false; autoBlocked = false; startMic(false); }
+};
+$('demoBtn').onclick = () => {
+  if (source === 'demo') { stopDemo(); setSource(null); userPaused = false; autoStart(); }
+  else { userPaused = true; startDemo(); }
+};
 $('refBtn').onclick = () => { const t = curTuning(); pluck(S.instrument === 'cromatico' ? (lastMidi ?? 69) : t.notes[selIdx]); };
 
 // ---------- Visual do afinador ----------
@@ -894,6 +926,7 @@ function endSession(keepGoing){
   if (keepGoing) session = {start:Date.now()};
 }
 
+let refShown = false;
 function loop(now){
   if (source && ctx && analyser && now - lastDet > (buf && buf.length > 4096 ? 80 : 45) && now > refUntil) {
     lastDet = now;
@@ -906,9 +939,12 @@ function loop(now){
       lastMidi = info.midi; lastF = fm; show(info, fm);
     } else if (haveSig && now - lastHeard > 700) {
       hist.length = 0; inTune = 0;
-      idle(source === 'mic' ? 'OUVINDO…' : 'MODO DEMO', source === 'mic' ? 'toque uma corda' : 'gire a tarraxa simulada');
+      if (source === 'mic') micIdle(); else idle('MODO DEMO', 'gire a tarraxa simulada');
     }
   }
+  // enquanto a nota de referência toca, o microfone fica em pausa e volta sozinho
+  if (source === 'mic' && now <= refUntil && !refShown) { refShown = true; hist.length = 0; idle('NOTA DE REFERÊNCIA', 'o microfone volta em seguida'); }
+  else if (refShown && now > refUntil) { refShown = false; if (source === 'mic' && !haveSig) micIdle(); }
   shown += (target - shown) * .22;
   if (view === 'tuner') { paintGauge(shown, haveSig); drawWave(); }
   metroFrame();
@@ -945,7 +981,6 @@ $('instTabs').addEventListener('click', e => {
 $('strings').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   selIdx = demoIdx = +b.dataset.i;
-  if (S.autoDetect && source === 'mic') { S.autoDetect = false; save(); toast('Detector automático desligado — corda travada'); }
   if (demo) { $('demoKnob').value = randDet(); $('demoKnob').oninput(); }
   else if (S.refSound) pluck(curTuning().notes[selIdx]);
   renderStrings();
@@ -1288,6 +1323,7 @@ function renderSettings(){
     row('sens', 'Sensibilidade do microfone', SENSL.find(p => p[0] === S.sens)[1]) +
     tog('autoDetect', 'Detector automático de corda') +
     tog('refSound', 'Som de referência ao tocar na corda') +
+    tog('autoMic', 'Microfone ligado ao abrir') +
     tog('vibrate', 'Vibração ao afinar');
 }
 $('themes').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { S.theme = b.dataset.v; save(); applyTheme(); renderSettings(); drawDial(); } });
@@ -1299,7 +1335,7 @@ $('setList').addEventListener('click', e => {
     if (k === 'precision') pickSheet('Precisão', PREC, S.precision, v => { S.precision = v; save(); renderSettings(); });
     if (k === 'sens') pickSheet('Sensibilidade', SENSL, S.sens, v => { S.sens = v; save(); renderSettings(); });
     if (k === 'a4') go('calib');
-  } else if (t) { const k = t.dataset.t; S[k] = !S[k]; save(); renderSettings(); }
+  } else if (t) { const k = t.dataset.t; S[k] = !S[k]; save(); renderSettings(); if (k === 'autoMic' && S.autoMic) { userPaused = false; autoBlocked = false; autoStart(); } }
 });
 
 // ================= Início =================
@@ -1319,10 +1355,18 @@ requestAnimationFrame(loop);
 setTimeout(() => $('splash').classList.add('hide'), 1700);
 // Botão voltar (Android) e instalação offline
 window.nexusPause = () => {
-  if (source) { stopMic(); stopDemo(); setSource(null); }
+  if (source === 'mic') { stopMic(); setSource(null); }
+  else if (source) { stopMic(); stopDemo(); setSource(null); }
   if (M.playing) $('metPlay').onclick();
   stopTone();
 };
+window.nexusResume = () => autoStart();
+// no navegador: desliga ao sair da aba e liga de novo ao voltar
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { if (source === 'mic') { stopMic(); setSource(null); } }
+  else setTimeout(autoStart, 300);
+});
+setTimeout(autoStart, 1800);
 window.nexusBack = () => {
   if ($('sheet').classList.contains('on')) { closeSheet(); return true; }
   if (view !== 'tuner') { go(VIEWS[view].back || 'tuner'); return true; }
