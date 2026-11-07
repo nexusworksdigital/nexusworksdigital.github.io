@@ -1,5 +1,5 @@
 // Nexus Tuner — funciona offline depois da primeira visita
-const CACHE = 'nexus-tuner-v1';
+const CACHE = 'nexus-tuner-v2';
 const FILES = ['./', 'index.html', 'manifest.webmanifest',
   'fonts/Inter-Regular.woff', 'fonts/Inter-Medium.woff', 'fonts/Inter-SemiBold.woff', 'fonts/Inter-Bold.woff', 'fonts/Inter-ExtraBold.woff',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png'];
