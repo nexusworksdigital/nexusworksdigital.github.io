@@ -88,6 +88,10 @@ footer a { color: var(--sec); margin-right: 16px; }
 .texto .data { color: var(--sec); }
 .destaque { background: var(--cartao); border: 1px solid var(--borda); border-left: 4px solid var(--azul); border-radius: 10px; padding: 16px 18px; }
 
+.botao.embreve { background: transparent; border: 1px dashed var(--borda); color: var(--sec); box-shadow: none; }
+.botao.embreve:hover { color: var(--texto); border-color: var(--azul); }
+.selo-breve { font-size: 12px; letter-spacing: 2px; color: var(--ciano); border: 1px solid var(--ciano); border-radius: 6px; padding: 3px 8px; vertical-align: middle; margin-left: 8px; }
+
 /* marca da empresa */
 .nwd { font-weight: 700; letter-spacing: 2px; font-size: 16px; }
 .nwd b { color: var(--ciano); }
