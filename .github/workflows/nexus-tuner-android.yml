@@ -60,7 +60,7 @@ jobs:
           if [ "$SIGNED" = "1" ]; then
             ./gradlew --no-daemon --stacktrace assembleRelease bundleRelease
           else
-            ./gradlew --no-daemon --stacktrace assembleDebug
+            ./gradlew --no-daemon --stacktrace assembleDebug assembleRelease bundleRelease
           fi
 
       - name: Separar arquivos
