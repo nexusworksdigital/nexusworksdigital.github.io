@@ -129,3 +129,10 @@ a.app:hover { transform: translateY(-3px); border-color: var(--azul); }
   header.topo nav a { margin-left: 12px; font-size: 14px; }
   header.topo nav a.ocultar { display: none; }
 }
+
+/* areas (pagina inicial) */
+a.cartao.area { text-decoration: none; color: inherit; transition: transform .15s, border-color .15s; }
+a.cartao.area:hover { transform: translateY(-3px); border-color: var(--azul); }
+.cartao.area .ex { display: block; margin-top: 10px; color: var(--ciano); font-weight: 600; font-size: 14px; }
+.cartao.area .ex.cinza { color: var(--sec); }
+#areas { margin-bottom: 56px; }
