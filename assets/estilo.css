@@ -136,3 +136,5 @@ a.cartao.area:hover { transform: translateY(-3px); border-color: var(--azul); }
 .cartao.area .ex { display: block; margin-top: 10px; color: var(--ciano); font-weight: 600; font-size: 14px; }
 .cartao.area .ex.cinza { color: var(--sec); }
 #areas { margin-bottom: 56px; }
+.galeria.bb { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.galeria.bb img { aspect-ratio: 16 / 9; object-fit: cover; }
