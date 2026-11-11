@@ -10,14 +10,15 @@
     }
   ],
   "latest": {
-    "versionCode": 6,
-    "versionName": "1.0.6",
+    "versionCode": 7,
+    "versionName": "1.0.7",
     "date": "2026-11-11",
     "notes": [
+      "Sino de novidades: avisa quando sai uma versão nova e atualiza o app com um toque",
       "Volume e sensibilidade do microfone, com medidor de nível ao vivo",
       "Ponteiro mais ágil na hora de afinar"
     ],
     "apk": "https://github.com/nexusworksdigital/nexusworksdigital.github.io/releases/download/nexus-tuner/NexusTuner.apk",
-    "sha256": "a5533ddd89b6876b139499e627ee892a91a3d2dd8cb0d16254b84956844c4b5b"
+    "sha256": "e734c9498717e1856bb3588e7e87927fcd24c03b7270ad301a9523d174ffd1ec"
   }
 }
