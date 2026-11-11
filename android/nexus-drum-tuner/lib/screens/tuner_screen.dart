@@ -31,6 +31,9 @@ class TunerScreen extends StatelessWidget {
         final showNote = st.autoNote && st.display != 'hz';
         final showCents = st.display == 'all';
 
+        return LayoutBuilder(builder: (context, box) {
+        // medidor proporcional à tela (no Safari sobra menos altura)
+        final gaugeW = math.min(box.maxWidth - 32, math.max(210.0, (box.maxHeight - 430) * 1.12));
         return Stack(
           children: [
             // caixa integrada ao layout
@@ -58,7 +61,10 @@ class TunerScreen extends StatelessWidget {
                 const SizedBox(height: 4),
                 const DrumSelector(),
                 const SizedBox(height: 10),
-                SegmentArc(
+                Center(
+                  child: SizedBox(
+                    width: gaugeW,
+                    child: SegmentArc(
                   min: lo,
                   max: hi,
                   value: hz,
@@ -89,6 +95,8 @@ class TunerScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       _StatusPill(cents: cents, listening: audio.listening, hit: audio.hitActive),
                     ],
+                  ),
+                ),
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -184,6 +192,7 @@ class TunerScreen extends StatelessWidget {
             ),
           ],
         );
+        });
       },
     );
   }

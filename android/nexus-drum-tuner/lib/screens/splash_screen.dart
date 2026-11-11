@@ -47,12 +47,15 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     final fade = CurvedAnimation(parent: _c, curve: Curves.easeOut);
     return Scaffold(
       backgroundColor: NX.bg,
-      body: Stack(children: [
+      body: Stack(fit: StackFit.expand, children: [
         Positioned(
           left: 0,
           right: 0,
           bottom: 0,
-          child: ShaderMask(
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 560),
+              child: ShaderMask(
             shaderCallback: (r) => const LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -62,9 +65,12 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
             blendMode: BlendMode.dstIn,
             child: Image.asset('assets/img/snare.jpg', fit: BoxFit.fitWidth),
           ),
+            ),
+          ),
         ),
         SafeArea(
-          child: Column(children: [
+          child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            const SizedBox(width: double.infinity),
             const Spacer(flex: 3),
             FadeTransition(
               opacity: fade,

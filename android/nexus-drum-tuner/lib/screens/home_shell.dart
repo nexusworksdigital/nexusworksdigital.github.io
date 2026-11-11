@@ -27,6 +27,7 @@ class HomeShell extends StatefulWidget {
 class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
   bool _wasListening = false;
   bool _updateShown = false;
+  bool _firstTouch = false;
 
   static const _pages = [
     TunerScreen(),
@@ -41,8 +42,7 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    // no navegador (iPhone) o microfone só pode abrir após um toque
-    if (!kIsWeb) audio.start();
+    audio.start();
     updates.addListener(_onUpdates);
     WidgetsBinding.instance.addPostFrameCallback((_) => _onUpdates());
   }
@@ -95,7 +95,16 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
         final tab = app.tab.clamp(0, _pages.length - 1);
         return Scaffold(
           drawer: const _NexusDrawer(),
-          body: Container(
+          body: Listener(
+            behavior: HitTestBehavior.translucent,
+            // navegador: se o microfone não abriu sozinho, abre no primeiro toque
+            onPointerDown: (_) {
+              if (kIsWeb && !_firstTouch && !audio.listening) {
+                _firstTouch = true;
+                audio.start();
+              }
+            },
+            child: Container(
             decoration: const BoxDecoration(
               gradient: RadialGradient(
                 center: Alignment(0, -0.6),
@@ -115,6 +124,7 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
                 );
               }),
             ),
+          ),
           ),
           bottomNavigationBar: _NexusNavBar(index: tab, onTap: app.goTab),
         );

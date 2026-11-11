@@ -1,7 +1,7 @@
 name: nexus_drum_tuner
 description: Nexus Drum Tuner - Afinador de Bateria Profissional (Nexus Works Digital).
 publish_to: 'none'
-version: 1.2.2+8
+version: 1.2.3+9
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
