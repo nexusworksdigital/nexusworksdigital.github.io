@@ -10,17 +10,17 @@
     }
   ],
   "latest": {
-    "versionCode": 8,
-    "versionName": "1.2.2",
+    "versionCode": 9,
+    "versionName": "1.2.3",
     "date": "2026-11-11",
     "notes": [
-      "Versão para iPhone e iPad: use o Nexus Drum Tuner direto no navegador (Safari)",
-      "Lugs: escolha 8, 10 ou 12 parafusos na caixa e 6, 8 ou 10 no surdo",
-      "Kit completo: Tom 8\", 10\", 12\", 13\", Surdo 14\" e 16\""
+      "Tela de abertura centralizada e ajustada para iPhone e navegador",
+      "O app já abre com o microfone ligado",
+      "Medidor do Tuner se ajusta ao tamanho da tela"
     ],
     "apk_arm64": "https://github.com/nexusworksdigital/nexusworksdigital.github.io/releases/download/nexus-drum-tuner/NexusDrumTuner-arm64.apk",
     "apk_armv7": "https://github.com/nexusworksdigital/nexusworksdigital.github.io/releases/download/nexus-drum-tuner/NexusDrumTuner-armv7.apk",
-    "sha256_arm64": "44a05f66df0cc24ecada6125da58ec752339b2831c25adf34899aacbf338ac65",
-    "sha256_armv7": "2f1b8adf078233ad997e622b885abd1be3d621169d608910c89df4047ab23e01"
+    "sha256_arm64": "7c47d46f820800510bccb896b5909aaba10befbfa927ee6dd33396d191e0866f",
+    "sha256_armv7": "1a20ffa75c98ce99382b2e46b0aa3497246cb58bac37490a82c15c412864f2ec"
   }
 }
