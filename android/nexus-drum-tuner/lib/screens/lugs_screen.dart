@@ -47,6 +47,31 @@ class LugsScreen extends StatelessWidget {
                 ),
               ),
             ),
+            Builder(builder: (context) {
+              final opts = {...d.type.lugOptions, d.lugs}.toList()..sort();
+              return Row(children: [
+                Text('Parafusos', style: NX.inter(13, c: NX.white)),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Segmented<int>(
+                    value: d.lugs,
+                    height: 34,
+                    onChanged: (n) async {
+                      final hasData = app.drum.lugTop.any((v) => v != null) ||
+                          app.drum.lugBottom.any((v) => v != null);
+                      if (hasData &&
+                          !await confirm(context, 'Mudar para $n parafusos?',
+                              'As medições dos parafusos acima de $n serão descartadas.')) {
+                        return;
+                      }
+                      app.setLugCount(n);
+                    },
+                    items: [for (final n in opts) (n, '$n', null)],
+                  ),
+                ),
+              ]);
+            }),
+            const SizedBox(height: 6),
             LugMap(
               lugs: d.lugs,
               values: values,

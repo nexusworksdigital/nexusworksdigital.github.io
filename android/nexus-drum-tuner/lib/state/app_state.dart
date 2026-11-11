@@ -79,10 +79,54 @@ class AppState extends ChangeNotifier {
       }
     } catch (_) {}
     if (kit.isEmpty) _kitFromPreset(preset);
+    _migrateKit(p);
     selected = (p.getInt('selected') ?? 0).clamp(0, kit.length - 1);
     _applySettingsToEngine();
     _hitSub = audio.hits.listen(_onHit);
     notifyListeners();
+  }
+
+  /// v1.2.1: inclui Tom 8", Tom 13" e Surdo 16" em kits já salvos.
+  void _migrateKit(SharedPreferences p) {
+    if (p.getBool('kitMigr121') ?? false) return;
+    bool has(DrumType t, double d) => kit.any((x) => x.type == t && x.diameter == d);
+    final stamp = DateTime.now().millisecondsSinceEpoch;
+    final extra = <Drum>[
+      if (!has(DrumType.tom, 8))
+        Drum(id: 'm${stamp}a', type: DrumType.tom, name: 'Tom 8"', diameter: 8, depth: 7, lugs: 6, targetHz: 220),
+      if (!has(DrumType.tom, 13))
+        Drum(id: 'm${stamp}b', type: DrumType.tom, name: 'Tom 13"', diameter: 13, depth: 10, lugs: 6, targetHz: 131),
+      if (!has(DrumType.floor, 16))
+        Drum(id: 'm${stamp}c', type: DrumType.floor, name: 'Surdo 16"', diameter: 16, depth: 16, lugs: 8, targetHz: 98),
+    ];
+    for (final d in extra) {
+      // toms antes dos surdos, surdos antes do bumbo
+      final after = d.type == DrumType.tom ? DrumType.floor : DrumType.kick;
+      final i = kit.indexWhere((x) => x.type == after);
+      if (i < 0) {
+        kit.add(d);
+      } else {
+        kit.insert(i, d);
+      }
+    }
+    // toms em ordem de tamanho
+    final toms = kit.where((x) => x.type == DrumType.tom).toList()
+      ..sort((a, b) => a.diameter.compareTo(b.diameter));
+    var t = 0;
+    for (var i = 0; i < kit.length; i++) {
+      if (kit[i].type == DrumType.tom) kit[i] = toms[t++];
+    }
+    p.setBool('kitMigr121', true);
+    _save();
+  }
+
+  /// Muda a quantidade de parafusos do tambor atual (Lugs).
+  void setLugCount(int n) {
+    if (n == drum.lugs) return;
+    drum.setLugCount(n);
+    currentLug = currentLug.clamp(0, n - 1);
+    armedLug = null;
+    touch();
   }
 
   int _order(Preset p) {

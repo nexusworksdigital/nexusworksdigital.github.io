@@ -45,8 +45,17 @@ extension DrumTypeInfo on DrumType {
         DrumType.other => [4, 6, 8, 10, 12],
       };
 
+  /// Quantidades de parafusos comuns para escolher na tela Lugs.
+  List<int> get lugOptions => switch (this) {
+        DrumType.snare => [8, 10, 12],
+        DrumType.tom => [5, 6, 8],
+        DrumType.floor => [6, 8, 10],
+        DrumType.kick => [8, 10, 12],
+        DrumType.other => [4, 6, 8, 10],
+      };
+
   int get defaultLugs => switch (this) {
-        DrumType.snare => 8,
+        DrumType.snare => 10,
         DrumType.tom => 6,
         DrumType.floor => 8,
         DrumType.kick => 10,

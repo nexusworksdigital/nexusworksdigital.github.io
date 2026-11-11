@@ -163,9 +163,12 @@ class Preset {
   static List<Preset> builtIns() => [
         Preset(id: 'rock', name: 'Rock - Padrão', style: 'rock', subtitle: 'Surdo 14"', builtIn: true, drums: [
           PresetDrum(DrumType.snare, 'Caixa', 14, 6.5, 196),
-          PresetDrum(DrumType.tom, 'Tom 1', 10, 8, 165),
-          PresetDrum(DrumType.tom, 'Tom 2', 12, 9, 147),
-          PresetDrum(DrumType.floor, 'Surdo', 14, 14, 110),
+          PresetDrum(DrumType.tom, 'Tom 8"', 8, 7, 220),
+          PresetDrum(DrumType.tom, 'Tom 10"', 10, 8, 165),
+          PresetDrum(DrumType.tom, 'Tom 12"', 12, 9, 147),
+          PresetDrum(DrumType.tom, 'Tom 13"', 13, 10, 131),
+          PresetDrum(DrumType.floor, 'Surdo 14"', 14, 14, 110),
+          PresetDrum(DrumType.floor, 'Surdo 16"', 16, 16, 98),
           PresetDrum(DrumType.kick, 'Bumbo', 22, 18, 55),
         ]),
         Preset(id: 'metal', name: 'Metal - Agressivo', style: 'metal', subtitle: 'Pesado', builtIn: true, drums: [
