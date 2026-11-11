@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../services/updates.dart';
@@ -199,7 +200,11 @@ class UpdateScreen extends StatelessWidget {
                     style: NX.inter(13, c: NX.silver),
                   ),
                 ),
-              ] else if (has)
+              ] else if (kIsWeb)
+                Text('Você está usando a versão de navegador: ela é atualizada automaticamente '
+                    'sempre que você abre o app.',
+                    textAlign: TextAlign.center, style: NX.inter(13.5, c: NX.silver))
+              else if (has)
                 PrimaryButton(
                   label: 'Atualizar agora',
                   icon: Icons.system_update,

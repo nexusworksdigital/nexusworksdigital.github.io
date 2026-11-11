@@ -1,7 +1,7 @@
 name: nexus_drum_tuner
 description: Nexus Drum Tuner - Afinador de Bateria Profissional (Nexus Works Digital).
 publish_to: 'none'
-version: 1.2.1+7
+version: 1.2.2+8
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -34,3 +34,8 @@ flutter_launcher_icons:
   image_path: assets/icon/icon_square.png
   adaptive_icon_background: "#08080A"
   adaptive_icon_foreground: assets/icon/foreground.png
+  web:
+    generate: true
+    image_path: assets/icon/icon_square.png
+    background_color: "#060607"
+    theme_color: "#FF7A1A"

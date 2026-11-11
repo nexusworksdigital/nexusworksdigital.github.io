@@ -82,7 +82,8 @@ class UpdateService extends ChangeNotifier {
   StreamSubscription<OtaEvent>? _ota;
   SharedPreferences? _prefs;
 
-  bool get hasUpdate => latest != null && latest!.versionCode > currentCode;
+  /// Na versão de navegador o app já é sempre o mais recente.
+  bool get hasUpdate => !kIsWeb && latest != null && latest!.versionCode > currentCode;
 
   /// Notificações (a atualização disponível vem primeiro).
   List<NxNotification> get notifications {

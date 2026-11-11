@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../audio/audio_engine.dart';
@@ -40,7 +41,8 @@ class _HomeShellState extends State<HomeShell> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    audio.start();
+    // no navegador (iPhone) o microfone só pode abrir após um toque
+    if (!kIsWeb) audio.start();
     updates.addListener(_onUpdates);
     WidgetsBinding.instance.addPostFrameCallback((_) => _onUpdates());
   }

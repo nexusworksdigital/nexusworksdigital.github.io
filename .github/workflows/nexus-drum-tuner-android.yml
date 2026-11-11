@@ -41,7 +41,7 @@ jobs:
 
       - name: Preparar projeto Android
         run: |
-          flutter create --org com.nexusworksdigital --project-name nexus_drum_tuner --platforms android .
+          flutter create --org com.nexusworksdigital --project-name nexus_drum_tuner --platforms android,web .
           M=android/app/src/main/AndroidManifest.xml
           sed -i 's#<application#<uses-permission android:name="android.permission.RECORD_AUDIO"/>\n    <uses-permission android:name="android.permission.INTERNET"/>\n    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>\n    <application#' $M
           sed -i 's/android:label="nexus_drum_tuner"/android:label="Nexus Drum Tuner"/' $M
@@ -81,6 +81,16 @@ jobs:
 
       - name: Compilar
         run: flutter build apk --release --split-per-abi
+
+      - name: Compilar versão de navegador (iPhone/iPad/PC)
+        run: |
+          sed -i 's#<title>.*</title>#<title>Nexus Drum Tuner</title>#' web/index.html
+          sed -i 's#"name": "nexus_drum_tuner"#"name": "Nexus Drum Tuner"#; s#"short_name": "nexus_drum_tuner"#"short_name": "Drum Tuner"#' web/manifest.json
+          sed -i 's#<meta name="apple-mobile-web-app-title" content="[^"]*">#<meta name="apple-mobile-web-app-title" content="Drum Tuner">#' web/index.html
+          flutter build web --release --base-href /nexus-drum-tuner/app/
+          rm -rf ../../nexus-drum-tuner/app
+          cp -r build/web ../../nexus-drum-tuner/app
+          ls ../../nexus-drum-tuner/app
 
       - name: Assinar com a chave da Nexus
         env:
@@ -150,6 +160,6 @@ jobs:
           cd ../..
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add nexus-drum-tuner/feed.json
-          git commit -m "Nexus Drum Tuner: feed atualizado (nova versão)" || exit 0
+          git add nexus-drum-tuner/feed.json nexus-drum-tuner/app
+          git commit -m "Nexus Drum Tuner: nova versão (feed + app de navegador)" || exit 0
           for i in 1 2 3; do git pull --rebase -q origin main && git push && break; sleep 5; done
