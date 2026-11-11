@@ -10,17 +10,17 @@
     }
   ],
   "latest": {
-    "versionCode": 7,
-    "versionName": "1.2.1",
+    "versionCode": 8,
+    "versionName": "1.2.2",
     "date": "2026-11-11",
     "notes": [
-      "Lugs: escolha 8, 10 ou 12 parafusos na caixa e 6, 8 ou 10 no surdo, direto na tela",
-      "Kit completo: Tom 8\", Tom 10\", Tom 12\", Tom 13\", Surdo 14\" e Surdo 16\"",
-      "Caixa agora vem com 10 parafusos por padrão"
+      "Versão para iPhone e iPad: use o Nexus Drum Tuner direto no navegador (Safari)",
+      "Lugs: escolha 8, 10 ou 12 parafusos na caixa e 6, 8 ou 10 no surdo",
+      "Kit completo: Tom 8\", 10\", 12\", 13\", Surdo 14\" e 16\""
     ],
     "apk_arm64": "https://github.com/nexusworksdigital/nexusworksdigital.github.io/releases/download/nexus-drum-tuner/NexusDrumTuner-arm64.apk",
     "apk_armv7": "https://github.com/nexusworksdigital/nexusworksdigital.github.io/releases/download/nexus-drum-tuner/NexusDrumTuner-armv7.apk",
-    "sha256_arm64": "ad3e8eb12491e261ba70096677c327359866582824140698fccb7102569127c5",
-    "sha256_armv7": "129914dd5794e4e6f66cdba805e2df7d012ee012c5824c305298715d82d53854"
+    "sha256_arm64": "44a05f66df0cc24ecada6125da58ec752339b2831c25adf34899aacbf338ac65",
+    "sha256_armv7": "2f1b8adf078233ad997e622b885abd1be3d621169d608910c89df4047ab23e01"
   }
 }
