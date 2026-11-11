@@ -201,6 +201,17 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .sounds button.on{box-shadow:var(--oglow);color:var(--text)}
 .sounds button.on svg{color:var(--primary);filter:drop-shadow(0 0 6px #FF6A00aa)}
 .sounds button.ping{transform:scale(.95)}
+/* Painel do microfone */
+.mbtn{flex:0 0 auto;padding:15px 14px}
+.meter{position:relative;height:16px;border-radius:8px;background:var(--graphite);box-shadow:var(--edge);overflow:hidden;margin:6px 0 4px}
+.meter i{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:8px;background:linear-gradient(90deg,#22D163 0%,#22D163 62%,#F5B942 80%,#EF4444 100%);background-size:var(--mw,300px) 100%;transition:width .05s linear}
+.meter b{position:absolute;top:-3px;bottom:-3px;width:3px;border-radius:2px;background:#fff;box-shadow:0 0 8px #fff;transform:translateX(-50%)}
+.meter.off i{opacity:.35}
+.mlegend{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px}
+.mrow{display:flex;justify-content:space-between;align-items:baseline;margin-top:16px;font-size:14px;font-weight:600}
+.mrow span{color:var(--primary);font-variant-numeric:tabular-nums}
+.mhint{font-size:12px;color:var(--muted);line-height:1.45;margin-top:2px}
+.mstatus{font-size:12.5px;margin-top:6px;min-height:18px;font-weight:600}
 /* Tools */
 .tool{display:flex;align-items:center;gap:14px;width:100%;background:var(--card);box-shadow:var(--edge);border-radius:16px;padding:15px 14px;margin-bottom:10px;text-align:left}
 .tool .ic{width:46px;height:46px;border-radius:13px;background:radial-gradient(circle at 50% 30%,#FF6A0026,#FF6A000a);box-shadow:inset 0 0 0 1px #FF6A0030;color:var(--primary);display:grid;place-items:center;flex:none}
@@ -312,6 +323,7 @@ select.sel{appearance:none;width:100%;background:var(--graphite);border:1px soli
       <div class="listen">
         <button class="btn pri" id="listenBtn"></button>
         <button class="btn sec" id="refBtn" title="Tocar nota de referência"><svg class="i" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg></button>
+        <button class="btn sec" id="micBtn" title="Volume e sensibilidade do microfone"></button>
         <button class="btn sec" id="demoBtn">Demo</button>
       </div>
       <div class="demo" id="demoBox">
@@ -455,7 +467,8 @@ const IC = {
   play:'<path d="M8 5.5v13l11-6.5z"/>',
   pause:'<rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/>',
   mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
-  stop:'<rect x="6" y="6" width="12" height="12" rx="2"/>'
+  stop:'<rect x="6" y="6" width="12" height="12" rx="2"/>',
+  sliders:'<path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/>'
 };
 const svg = (n, cls='i', extra='') => `<svg class="${cls}" viewBox="0 0 24 24" ${extra}>${IC[n]}</svg>`;
 const LOGO = `<defs><linearGradient id="lgS" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#8d96a3"/></linearGradient><linearGradient id="lgO" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#FF6A00"/><stop offset="1" stop-color="#FFB15C"/></linearGradient></defs>
@@ -497,12 +510,13 @@ const INSTR = [
 
 // ================= Estado =================
 const DEF = {
-  theme:'dark', precision:3, a4:440, sens:'media', autoDetect:true, refSound:true, vibrate:true, autoMic:true, style:'analog',
+  theme:'dark', precision:3, a4:440, sens:'media', autoDetect:true, refSound:true, vibrate:true, autoMic:true, micVol:100, sensLvl:5, style:'analog',
   instrument:'guitarra', lastInst:'guitarra', tuning:{six:'padrao', bass:'bpadrao'}, fav:['padrao','dropd'], custom:[], history:[],
   met:{bpm:120, beats:4, den:4, vol:70, accent:true, sound:'classic'}
 };
 let S = JSON.parse(JSON.stringify(DEF));
 try { const s = JSON.parse(localStorage.getItem('nexusTuner2') || 'null'); if (s) S = Object.assign(S, s, {met:Object.assign({}, DEF.met, s.met||{}), tuning:Object.assign({}, DEF.tuning, s.tuning||{})}); } catch(e){}
+if (typeof S.sensLvl !== 'number') S.sensLvl = ({baixa:3, media:5, alta:8})[S.sens] || 5;
 const save = () => { try { localStorage.setItem('nexusTuner2', JSON.stringify(S)); } catch(e){} };
 
 const $ = id => document.getElementById(id);
@@ -598,9 +612,9 @@ function setupAnalyser(){
   if (!analyser) analyser = ctx.createAnalyser();
   if (analyser.fftSize !== size || !buf) { analyser.fftSize = size; buf = new Float32Array(size); yinD = new Float32Array(size / 2); }
 }
-function yin(x, sr, fMin){
-  const W = x.length >> 1;
-  const tauMax = Math.min(W - 2, Math.floor(sr / fMin));
+function yin(x, sr, fMin, Wset){
+  const W = Wset || (x.length >> 1);
+  const tauMax = Math.min(x.length - W - 2, Math.floor(sr / fMin));
   const tauMin = Math.max(2, Math.floor(sr / 1400));
   const d = yinD; d[0] = 1; let run = 0;
   for (let tau = 1; tau <= tauMax; tau++) {
@@ -644,14 +658,18 @@ async function startMic(auto){
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw Object.assign(new Error(), {name:'NotSupportedError'});
     micStream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}});
     stopDemo();
-    micNode = ctx.createMediaStreamSource(micStream); micNode.connect(analyser);
+    micNode = ctx.createMediaStreamSource(micStream);
+    if (!micGain) micGain = ctx.createGain();
+    micGain.gain.value = S.micVol / 100;
+    micNode.connect(micGain); micGain.connect(analyser);
     setSource('mic');
   } catch(err) {
     if (auto) { autoBlocked = true; setSource(null); }  // sem incomodar: fica o botão Ouvir
     else micError(err);
   } finally { micStarting = false; }
 }
-function stopMic(){ if (micNode) { try { micNode.disconnect(); } catch(e){} micNode = null; } if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; } }
+let micGain = null;
+function stopMic(){ if (micGain) { try { micGain.disconnect(); } catch(e){} } if (micNode) { try { micNode.disconnect(); } catch(e){} micNode = null; } if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; } }
 const embedded = (() => { try { return window.self !== window.top; } catch(e) { return true; } })();
 function micError(err){
   let msg;
@@ -705,6 +723,7 @@ function renderListenBtn(){
   b.classList.toggle('stop', !!source);
   b.innerHTML = source ? svg('stop') + 'Parar' : svg('mic') + 'Ouvir';
   $('demoBtn').textContent = source === 'demo' ? 'Sair' : 'Demo';
+  $('micBtn').className = 'btn sec mbtn'; $('micBtn').innerHTML = svg('sliders');
 }
 $('listenBtn').onclick = () => {
   if (source) { userPaused = true; stopMic(); stopDemo(); setSource(null); }
@@ -714,6 +733,55 @@ $('demoBtn').onclick = () => {
   if (source === 'demo') { stopDemo(); setSource(null); userPaused = false; autoStart(); }
   else { userPaused = true; startDemo(); }
 };
+// ---------- Painel: volume e sensibilidade do microfone ----------
+const dbPos = r => { const db = 20 * Math.log10(Math.max(r, 1e-6)); return Math.max(0, Math.min(100, (db + 70) / 64 * 100)); }; // -70 dB … -6 dB
+const sensLabel = l => l <= 2 ? 'baixa' : l <= 4 ? 'média-baixa' : l <= 6 ? 'média' : l <= 8 ? 'alta' : 'máxima';
+let micSheetOpen = false;
+function openMicSheet(){
+  openSheet(`<h3>Microfone</h3>
+    <p style="margin-bottom:8px">Toque uma corda e veja o nível. O som precisa passar da <b>linha branca</b> para o afinador reagir.</p>
+    <div class="meter" id="mMeter"><i id="mFill"></i><b id="mGate"></b></div>
+    <div class="mlegend"><span>silêncio</span><span>nível do som</span><span>muito alto</span></div>
+    <div class="mstatus" id="mStatus"></div>
+    <div class="mrow">Volume do microfone <span id="mVolV"></span></div>
+    <input type="range" id="mVol" min="25" max="400" step="5" value="${S.micVol}">
+    <div class="mhint">Aumente se o instrumento é baixo ou está longe do celular. Diminua se o medidor fica no vermelho.</div>
+    <div class="mrow">Sensibilidade <span id="mSensV"></span></div>
+    <input type="range" id="mSens" min="1" max="10" step="1" value="${S.sensLvl}">
+    <div class="mhint">Alta: capta notas bem baixinhas (lugar silencioso). Baixa: ignora barulho e conversa em volta.</div>
+    <div class="row2" style="margin-top:16px"><button class="btn sec" id="mReset">Restaurar padrão</button><button class="btn pri" id="mOk">Pronto</button></div>`);
+  micSheetOpen = true;
+  const upd = () => {
+    $('mVolV').textContent = S.micVol + '%';
+    $('mSensV').textContent = S.sensLvl + ' · ' + sensLabel(S.sensLvl);
+    $('mGate').style.left = dbPos(gateOf(S.sensLvl)) + '%';
+    document.querySelectorAll('#sheet input[type=range]').forEach(syncRange);
+  };
+  $('mVol').oninput = e => { S.micVol = +e.target.value; if (micGain && ctx) micGain.gain.setTargetAtTime(S.micVol / 100, ctx.currentTime, .02); save(); upd(); };
+  $('mSens').oninput = e => { S.sensLvl = +e.target.value; save(); upd(); };
+  $('mReset').onclick = () => { S.micVol = 100; S.sensLvl = 5; $('mVol').value = 100; $('mSens').value = 5; if (micGain && ctx) micGain.gain.setTargetAtTime(1, ctx.currentTime, .02); save(); upd(); };
+  $('mOk').onclick = closeSheet;
+  upd();
+  if (!source) { userPaused = false; autoBlocked = false; startMic(false); }
+}
+function micSheetFrame(){
+  if (!micSheetOpen) return;
+  if (!$('sheet').classList.contains('on') || !$('mFill')) { micSheetOpen = false; if (view === 'settings') renderSettings(); return; }
+  const live = source === 'mic' && performance.now() > refUntil;
+  if (live && analyser && buf && !(performance.now() - lastDet < 60)) {
+    analyser.getFloatTimeDomainData(buf); let r = 0; for (let i = 0; i < buf.length; i++) r += buf[i] * buf[i]; lastRms = Math.sqrt(r / buf.length);
+  }
+  const lv = live ? lastRms : 0, pos = dbPos(lv), over = lv >= gateOf(S.sensLvl);
+  $('mFill').style.width = pos + '%';
+  $('mFill').style.setProperty('--mw', $('mMeter').clientWidth + 'px');
+  $('mMeter').classList.toggle('off', !over);
+  const st = $('mStatus');
+  if (source !== 'mic') { st.textContent = source === 'demo' ? 'Modo demonstração ligado: o medidor mostra só o microfone.' : 'Microfone desligado. Toque em Ouvir.'; st.style.color = 'var(--muted)'; }
+  else if (pos > 92) { st.textContent = 'Muito alto: diminua o volume do microfone.'; st.style.color = 'var(--bad)'; }
+  else if (over) { st.textContent = 'Ouvindo bem ✓'; st.style.color = 'var(--good)'; }
+  else { st.textContent = 'Baixo demais: toque mais forte, aproxime o celular ou aumente o volume/sensibilidade.'; st.style.color = 'var(--muted)'; }
+}
+$('micBtn').onclick = openMicSheet;
 $('refBtn').onclick = () => { const t = curTuning(); pluck(S.instrument === 'cromatico' ? (lastMidi ?? 69) : t.notes[selIdx]); };
 
 // ---------- Visual do afinador ----------
@@ -857,17 +925,23 @@ function idle(title, sub){
 
 const hist = [];
 let lastDet = 0, lastHeard = 0, inTune = 0;
-const SENS = {baixa:.015, media:.007, alta:.003};
+// sensibilidade 1 (só sons fortes, ignora barulho) … 10 (capta sons bem baixos)
+const gateOf = lvl => 0.03 * Math.pow(1 / 30, (lvl - 1) / 9);   // -30 dB … -60 dB
+const clarityOf = lvl => 0.9 - 0.011 * (lvl - 1);
+let lastRms = 0;
 const median = a => { const s = [...a].sort((x, y) => x - y); return s[s.length >> 1]; };
 
 function detect(){
   analyser.getFloatTimeDomainData(buf);
   let rms = 0; for (let i = 0; i < buf.length; i++) rms += buf[i] * buf[i];
   rms = Math.sqrt(rms / buf.length);
-  if (rms < SENS[S.sens]) return null;
+  lastRms = rms;
+  if (rms < gateOf(S.sensLvl)) return null;
   const fMin = S.instrument === 'cromatico' ? 27 : group() === 'bass' ? 28 : 55;
-  const r = yin(buf, ctx.sampleRate, fMin);
-  if (!r || r.clarity < .85 || r.f < fMin || r.f > 1400) return null;
+  const sr = ctx.sampleRate, tauMax = Math.floor(sr / fMin);
+  const W = Math.min(buf.length - tauMax - 2, Math.max(1536, 2 * tauMax));
+  const r = yin(buf.subarray(buf.length - (W + tauMax + 2)), sr, fMin, W);
+  if (!r || r.clarity < clarityOf(S.sensLvl) || r.f < fMin || r.f > 1400) return null;
   return r.f;
 }
 function resolve(f){
@@ -928,12 +1002,12 @@ function endSession(keepGoing){
 
 let refShown = false;
 function loop(now){
-  if (source && ctx && analyser && now - lastDet > (buf && buf.length > 4096 ? 80 : 45) && now > refUntil) {
+  if (source && ctx && analyser && now - lastDet > (buf && buf.length > 4096 ? 50 : 28) && now > refUntil) {
     lastDet = now;
     const f = detect();
     if (f) {
       if (hist.length && Math.abs(12 * Math.log2(f / median(hist))) > 2) hist.length = 0;
-      hist.push(f); if (hist.length > 5) hist.shift();
+      hist.push(f); if (hist.length > 3) hist.shift();
       lastHeard = now;
       const fm = median(hist), info = resolve(fm);
       lastMidi = info.midi; lastF = fm; show(info, fm);
@@ -945,9 +1019,11 @@ function loop(now){
   // enquanto a nota de referência toca, o microfone fica em pausa e volta sozinho
   if (source === 'mic' && now <= refUntil && !refShown) { refShown = true; hist.length = 0; idle('NOTA DE REFERÊNCIA', 'o microfone volta em seguida'); }
   else if (refShown && now > refUntil) { refShown = false; if (source === 'mic' && !haveSig) micIdle(); }
-  shown += (target - shown) * .22;
+  // ponteiro: rápido nas mudanças grandes, estável nas pequenas
+  { const d = target - shown; shown += d * (Math.abs(d) > 6 ? .5 : .3); }
   if (view === 'tuner') { paintGauge(shown, haveSig); drawWave(); }
   metroFrame();
+  micSheetFrame();
   requestAnimationFrame(loop);
 }
 
@@ -1320,7 +1396,7 @@ function renderSettings(){
   $('setList').innerHTML =
     row('precision', 'Precisão (afinado)', PREC.find(p => p[0] === S.precision)[1]) +
     row('a4', 'Frequência de Referência (A4)', S.a4 + ' Hz') +
-    row('sens', 'Sensibilidade do microfone', SENSL.find(p => p[0] === S.sens)[1]) +
+    row('mic', 'Microfone: volume e sensibilidade', `${S.micVol}% · ${S.sensLvl}/10`) +
     tog('autoDetect', 'Detector automático de corda') +
     tog('refSound', 'Som de referência ao tocar na corda') +
     tog('autoMic', 'Microfone ligado ao abrir') +
@@ -1333,7 +1409,7 @@ $('setList').addEventListener('click', e => {
   if (r) {
     const k = r.dataset.k;
     if (k === 'precision') pickSheet('Precisão', PREC, S.precision, v => { S.precision = v; save(); renderSettings(); });
-    if (k === 'sens') pickSheet('Sensibilidade', SENSL, S.sens, v => { S.sens = v; save(); renderSettings(); });
+    if (k === 'mic') openMicSheet();
     if (k === 'a4') go('calib');
   } else if (t) { const k = t.dataset.t; S[k] = !S[k]; save(); renderSettings(); if (k === 'autoMic' && S.autoMic) { userPaused = false; autoBlocked = false; autoStart(); } }
 });
