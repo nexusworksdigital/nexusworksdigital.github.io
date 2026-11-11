@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Nexus Drum Tuner – Afinador de bateria profissional</title>
-  <meta name="description" content="Afinador de bateria para Android: afinação por frequência (Hz), mapa de parafusos, analisador de espectro, presets de Rock, Metal, Pop, Forró e Sertanejo. Ouça a diferença entre uma bateria afinada e desafinada.">
+  <meta name="description" content="Afinador de bateria para Android: afinação por frequência (Hz), mapa de parafusos, analisador de espectro, presets de Rock, Metal, Pop, Forró e Sertanejo.">
   <link rel="canonical" href="https://nexusworksdigital.github.io/nexus-drum-tuner/">
   <meta name="keywords" content="afinador de bateria, afinar bateria, afinador de caixa, drum tuner, afinação de tambor, parafusos da bateria, frequência da bateria">
   <meta property="og:type" content="website">
@@ -41,21 +41,6 @@
     .telas img { width:100%; border-radius:24px; display:block; box-shadow: 0 0 0 5px #17140f, 0 20px 50px rgba(0,0,0,.6) }
     .telas figcaption { color: var(--sec); font-size:14px; margin-top:12px }
     .arte .celular { width:min(330px,80%); margin:0 auto; display:block; border-radius:34px; box-shadow:0 0 0 7px #18140f, 0 0 60px rgba(255,122,26,.3), 0 30px 80px rgba(0,0,0,.7) }
-    /* demonstração de áudio */
-    .demo { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px }
-    .demo .cartao h3 { display:flex; align-items:center; gap:10px }
-    .demo .cartao h3 small { color:#c7a98f; font-weight:500; font-size:13px }
-    .par { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px }
-    .tocar { display:flex; flex-direction:column; align-items:center; gap:6px; padding:14px 8px; border-radius:14px; border:1px solid #3a2a1e;
-      background:#120d0a; color:#fff; font:600 14px Inter,system-ui,sans-serif; cursor:pointer; transition:.2s }
-    .tocar svg { width:34px; height:34px }
-    .tocar.ok { border-color:#3ddc5a55 } .tocar.ok svg { color:#3ddc5a }
-    .tocar.ruim { border-color:#ff4d4d55 } .tocar.ruim svg { color:#ff6b4d }
-    .tocar.tocando { box-shadow:0 0 22px rgba(255,122,26,.55); border-color:#FF7A1A }
-    .tocar small { color:#b8a594; font-weight:500; font-size:12px }
-    .barra { height:4px; border-radius:2px; background:#2a1f17; width:100%; overflow:hidden }
-    .barra i { display:block; height:100%; width:0; background:#FF7A1A }
-    .explica { color:#cbb8a7; font-size:14.5px; margin-top:10px }
     .dl.android { border-color:#FF7A1A; box-shadow:0 0 22px rgba(255,122,26,.35) }
     ol.passos li::before { background: linear-gradient(135deg, #FFA048, #FF6A00) }
     .destaque { border-left-color:#FF7A1A }
@@ -126,7 +111,7 @@
       <nav>
         <a class="ativo" href="./"><svg><use href="#i-casa"/></svg>Início</a>
         <a href="../#apps"><svg><use href="#i-grade"/></svg>Apps</a>
-        <a href="#ouvir"><svg><use href="#i-fone"/></svg>Ouvir</a>
+        <a href="app/"><svg><use href="#i-play2"/></svg>Usar no navegador</a>
         <a href="#baixar"><svg><use href="#i-download"/></svg>Baixar</a>
       </nav>
     </div>
@@ -136,12 +121,11 @@
     <div class="c hero">
       <div>
         <div class="marca-app"><img src="img/icone.png" alt="Ícone do Nexus Drum Tuner"><div class="wm"><b>NEXUS</b><span>DRUM TUNER</span></div></div>
-        <h1 style="margin-top:22px">Afine sua bateria.<br><em>Ouça a diferença.</em></h1>
+        <h1 style="margin-top:22px">Afine sua bateria.<br><em>Encontre seu som.</em></h1>
         <p class="sub">Afinador de bateria profissional: frequência em Hz, nota e cents, afinação parafuso por parafuso, analisador de espectro e presets para cada estilo.</p>
         <div class="botoes">
           <a class="bt cheio" href="https://github.com/nexusworksdigital/nexusworksdigital.github.io/releases/download/nexus-drum-tuner/NexusDrumTuner-arm64.apk"><svg><use href="#i-android"/></svg><span>Baixar para Android<br><small style="font-weight:500">App (APK) · <span class="versao">v1.2</span></small></span></a>
           <a class="bt" href="app/"><svg><use href="#i-apple"/></svg><span>iPhone e navegador<br><small style="font-weight:500;color:#e2cdb8">Usar agora, sem instalar</small></span></a>
-          <a class="bt" href="#ouvir"><svg><use href="#i-fone"/></svg><span>Ouvir demonstração<br><small style="font-weight:500;color:#e2cdb8">Afinada × desafinada</small></span></a>
         </div>
         <div class="check-l"><span><svg><use href="#i-check"/></svg>Análise no próprio aparelho</span><span><svg><use href="#i-check"/></svg>Sem anúncios</span><span><svg><use href="#i-check"/></svg>Atualiza sozinho</span></div>
       </div>
@@ -157,34 +141,6 @@
       </div>
     </section>
 
-    <section class="c" id="ouvir">
-      <div class="titulo"><div><h2>Ouça a diferença</h2><p>Compare o som de cada tambor afinado e desafinado. Use fone de ouvido para perceber melhor.</p></div></div>
-      <div class="demo">
-        <div class="cartao"><h3><svg class=ic style="width:30px;height:30px;margin:0"><use href="#i-tambor"/></svg>Caixa <small>14" · alvo 196 Hz (G3)</small></h3>
-          <div class="par">
-            <button class="tocar ok" data-src="audio/caixa-afinada.mp3"><svg><use href="#i-ok"/></svg>Afinada<small>parafusos iguais</small><span class="barra"><i></i></span></button>
-            <button class="tocar ruim" data-src="audio/caixa-desafinada.mp3"><svg><use href="#i-ok"/></svg>Desafinada<small>parafusos desiguais</small><span class="barra"><i></i></span></button>
-          </div></div>
-        <div class="cartao"><h3><svg class=ic style="width:30px;height:30px;margin:0"><use href="#i-tambor"/></svg>Tom <small>12" · alvo 147 Hz (D3)</small></h3>
-          <div class="par">
-            <button class="tocar ok" data-src="audio/tom-afinada.mp3"><svg><use href="#i-ok"/></svg>Afinada<small>parafusos iguais</small><span class="barra"><i></i></span></button>
-            <button class="tocar ruim" data-src="audio/tom-desafinada.mp3"><svg><use href="#i-ok"/></svg>Desafinada<small>parafusos desiguais</small><span class="barra"><i></i></span></button>
-          </div></div>
-        <div class="cartao"><h3><svg class=ic style="width:30px;height:30px;margin:0"><use href="#i-tambor"/></svg>Surdo <small>16" · alvo 110 Hz (A2)</small></h3>
-          <div class="par">
-            <button class="tocar ok" data-src="audio/surdo-afinada.mp3"><svg><use href="#i-ok"/></svg>Afinada<small>parafusos iguais</small><span class="barra"><i></i></span></button>
-            <button class="tocar ruim" data-src="audio/surdo-desafinada.mp3"><svg><use href="#i-ok"/></svg>Desafinada<small>parafusos desiguais</small><span class="barra"><i></i></span></button>
-          </div></div>
-        <div class="cartao"><h3><svg class=ic style="width:30px;height:30px;margin:0"><use href="#i-tambor"/></svg>Bumbo <small>22" · alvo 55 Hz (A1)</small></h3>
-          <div class="par">
-            <button class="tocar ok" data-src="audio/bumbo-afinada.mp3"><svg><use href="#i-ok"/></svg>Afinada<small>parafusos iguais</small><span class="barra"><i></i></span></button>
-            <button class="tocar ruim" data-src="audio/bumbo-desafinada.mp3"><svg><use href="#i-ok"/></svg>Desafinada<small>parafusos desiguais</small><span class="barra"><i></i></span></button>
-          </div></div>
-        
-      </div>
-      <p class="explica">Na versão <b>desafinada</b>, os parafusos estão com tensões diferentes: a pele vibra em duas frequências muito próximas e o som “ondula” (batimento), perde sustentação e fica abaixo da nota. Na <b>afinada</b>, todos os parafusos estão iguais e o tambor soa limpo e estável. É exatamente isso que o Nexus Drum Tuner mede para você.</p>
-      <p class="nota">Áudios de demonstração gerados digitalmente pela Nexus Works Digital para comparação.</p>
-    </section>
 
     <section class="c">
       <div class="titulo"><div><h2>Um laboratório completo para bateristas</h2><p>Seis áreas, um só aplicativo.</p></div></div>
@@ -236,19 +192,6 @@
   fetch('feed.json?t=' + Date.now()).then(r => r.json()).then(f => {
     if (f.latest) document.querySelectorAll('.versao').forEach(e => e.textContent = (e.textContent.startsWith('v') ? 'v' : '') + f.latest.versionName);
   }).catch(() => {});
-  // um áudio por vez, com barra de progresso
-  let atual = null, botaoAtual = null;
-  document.querySelectorAll('.tocar').forEach(b => {
-    const a = new Audio(b.dataset.src); a.preload = 'none';
-    const barra = b.querySelector('.barra i');
-    a.addEventListener('timeupdate', () => { barra.style.width = (a.currentTime / (a.duration || 1) * 100) + '%'; });
-    a.addEventListener('ended', () => { b.classList.remove('tocando'); barra.style.width = '0'; });
-    b.addEventListener('click', () => {
-      if (atual && atual !== a) { atual.pause(); atual.currentTime = 0; botaoAtual.classList.remove('tocando'); botaoAtual.querySelector('.barra i').style.width = '0'; }
-      if (!a.paused) { a.pause(); b.classList.remove('tocando'); return; }
-      a.currentTime = 0; a.play(); b.classList.add('tocando'); atual = a; botaoAtual = b;
-    });
-  });
 </script>
 </body>
 </html>
