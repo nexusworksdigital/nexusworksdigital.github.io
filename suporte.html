@@ -20,7 +20,7 @@
   <link rel="icon" href="assets/favicon.png">
   <link rel="stylesheet" href="assets/nexus.css?v=1">
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"Organization","name":"Nexus Works Digital","url":"https://nexusworksdigital.github.io/","email":"nexusworksdigital@gmail.com"}
+  {"@context":"https://schema.org","@type":"Organization","name":"Nexus Works Digital","url":"https://nexusworksdigital.github.io/"}
   </script>
 <style>
   .sup { max-width: 860px; margin: 26px auto 60px; padding: 0 18px; }
@@ -105,7 +105,7 @@
   <main>
     <section class="sup">
       <h1>Suporte</h1>
-      <p class="lead">Dúvida, problema ou sugestão? Escreva para a gente. Respondemos pelo e-mail.</p>
+      <p class="lead">Dúvida, problema ou sugestão? Escreva na caixa abaixo. Respondemos no e-mail que você informar.</p>
 
       <div class="caixa">
         <h2><svg><use href="#i-fone"/></svg>Fale com o suporte</h2>
@@ -125,10 +125,6 @@
           </div>
         </form>
 
-        <div class="email">
-          <div><small>E-mail oficial de suporte e contato</small><b>nexusworksdigital@gmail.com</b></div>
-          <button class="bt" type="button" id="copiar"><svg><use href="#i-envelope"/></svg>Copiar e-mail</button>
-        </div>
       </div>
 
       <div class="rapido">
@@ -140,7 +136,7 @@
   </main>
   <script>
     (function () {
-      var E = 'nexusworksdigital@gmail.com';
+      var E = ['nexusworksdigital', 'gmail.com'].join('@'); // montado aqui para nao aparecer escrito na pagina
       document.getElementById('form-suporte').addEventListener('submit', function (ev) {
         ev.preventDefault();
         var f = this, assunto = '[' + f.app.value + '] ' + f.tipo.value + ' - ' + f.nome.value.trim();
@@ -148,9 +144,6 @@
         location.href = 'mailto:' + E + '?subject=' + encodeURIComponent(assunto) + '&body=' + encodeURIComponent(corpo);
         document.getElementById('ok').style.display = 'inline';
       });
-      document.getElementById('copiar').addEventListener('click', function () {
-        var b = this;
-        (navigator.clipboard ? navigator.clipboard.writeText(E) : Promise.reject()).then(function () { b.lastChild.textContent = 'Copiado!'; }, function () { prompt('E-mail:', E); });
       });
     })();
   </script>
@@ -162,7 +155,7 @@
         <a class="marca" href="./"><img src="assets/nwd_simbolo_ciano.png" alt=""><span class="txt" style="display:block"><b>NEXUS</b><small>WORKS DIGITAL</small></span></a>
         <span class="lema-r">Tecnologia, desempenho e produtividade em um só lugar.</span>
         <nav><a href="./">Início</a><a href="./#apps">Apps</a><a href="nexus-cockpit/#baixar">Downloads</a><a href="suporte.html">Suporte</a><a href="./#sobre">Sobre</a></nav>
-        <div class="redes"><a href="https://github.com/cildojuniorbt-cmd/Paineis-De-Instrumentos-Nexus-cockpit" aria-label="GitHub"><svg><use href="#i-github"/></svg></a><a href="mailto:nexusworksdigital@gmail.com" aria-label="E-mail"><svg><use href="#i-envelope"/></svg></a></div>
+        <div class="redes"><a href="https://github.com/cildojuniorbt-cmd/Paineis-De-Instrumentos-Nexus-cockpit" aria-label="GitHub"><svg><use href="#i-github"/></svg></a></div>
       </div>
       <div class="legal"><span>© 2026 Nexus Works Digital. Todos os direitos reservados.</span><a href="privacidade.html">Política de Privacidade</a><a href="suporte.html">Suporte</a></div>
     </div>
