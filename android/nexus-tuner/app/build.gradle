@@ -38,6 +38,25 @@ android {
         }
     }
 
+    // Duas versões do mesmo app:
+    //  site → APK do site, com atualização automática pelo sino
+    //  play → AAB da Google Play (a Play não permite que o app se atualize sozinho)
+    flavorDimensions 'loja'
+    productFlavors {
+        site {
+            dimension 'loja'
+            buildConfigField 'boolean', 'SELF_UPDATE', 'true'
+        }
+        play {
+            dimension 'loja'
+            buildConfigField 'boolean', 'SELF_UPDATE', 'false'
+        }
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17

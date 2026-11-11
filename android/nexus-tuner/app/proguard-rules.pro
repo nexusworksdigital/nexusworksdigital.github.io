@@ -1,1 +1,5 @@
-# O app só usa WebView, sem interface JavaScript: nenhuma regra extra é necessária.
+# Métodos chamados pelo JavaScript do app (ponte NexusAndroid)
+-keepclassmembers class com.nexusworksdigital.nexustuner.NexusBridge {
+    @android.webkit.JavascriptInterface <methods>;
+}
+-keepattributes JavascriptInterface

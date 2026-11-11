@@ -212,6 +212,30 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .mrow span{color:var(--primary);font-variant-numeric:tabular-nums}
 .mhint{font-size:12px;color:var(--muted);line-height:1.45;margin-top:2px}
 .mstatus{font-size:12.5px;margin-top:6px;min-height:18px;font-weight:600}
+/* Sino e novidades */
+.top .side{flex:1;display:flex;align-items:center}
+.top .side.r{justify-content:flex-end;gap:2px}
+.bell{position:relative}
+.bell .badge{position:absolute;top:2px;right:1px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--primary);color:#fff;font-size:10.5px;font-weight:700;display:grid;place-items:center;box-shadow:0 0 0 2px var(--bg),0 0 10px #FF6A00aa}
+.bell.ring svg{animation:ring 1.2s ease-in-out 2}
+@keyframes ring{0%,100%{transform:rotate(0)}15%{transform:rotate(14deg)}30%{transform:rotate(-12deg)}45%{transform:rotate(8deg)}60%{transform:rotate(-5deg)}}
+.vcard{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.vcard b{display:block;font-size:15px}
+.vcard small{color:var(--muted);font-size:12px}
+.upcard{background:radial-gradient(400px 160px at 50% 0,#FF6A0022,transparent 70%),var(--card);box-shadow:var(--oglow);border-radius:18px;padding:16px;margin-bottom:12px}
+.upcard h4{font-size:17px;margin-bottom:2px}
+.upcard .dt{color:var(--muted);font-size:12px;margin-bottom:10px}
+.upcard ul{margin:0 0 14px 18px;font-size:13.5px;line-height:1.55;color:#c9cfd6}
+:root[data-theme=light] .upcard ul{color:var(--muted)}
+.prog{height:8px;border-radius:4px;background:var(--graphite);overflow:hidden;margin:4px 0 6px}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff8a2a,#ff6a00);box-shadow:0 0 10px #FF6A00;transition:width .2s}
+.uperr{color:var(--bad);font-size:12.5px;margin-top:8px;line-height:1.45}
+.ncard{background:var(--card);box-shadow:var(--edge);border-radius:16px;padding:14px 15px;margin-bottom:10px;position:relative}
+.ncard.unread::before{content:"";position:absolute;top:18px;left:-4px;width:8px;height:8px;border-radius:50%;background:var(--primary);box-shadow:0 0 8px var(--primary)}
+.ncard .t{font-weight:600;font-size:14.5px;display:flex;justify-content:space-between;gap:10px}
+.ncard .t small{color:var(--muted);font-weight:500;font-size:11.5px;white-space:nowrap}
+.ncard p{color:var(--muted);font-size:13px;line-height:1.5;margin-top:4px}
+.ncard a{color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;display:inline-block;margin-top:6px}
 /* Tools */
 .tool{display:flex;align-items:center;gap:14px;width:100%;background:var(--card);box-shadow:var(--edge);border-radius:16px;padding:15px 14px;margin-bottom:10px;text-align:left}
 .tool .ic{width:46px;height:46px;border-radius:13px;background:radial-gradient(circle at 50% 30%,#FF6A0026,#FF6A000a);box-shadow:inset 0 0 0 1px #FF6A0030;color:var(--primary);display:grid;place-items:center;flex:none}
@@ -423,6 +447,9 @@ select.sel{appearance:none;width:100%;background:var(--graphite);border:1px soli
       <button class="btn sec full" id="histClear" style="margin-top:14px;color:var(--bad)">Limpar histórico</button>
     </section>
 
+    <!-- NOVIDADES (sino) -->
+    <section class="view" id="v-news"><div id="newsBox"></div></section>
+
     <!-- CONFIGURAÇÕES -->
     <section class="view" id="v-settings">
       <div class="label" style="margin-top:0">Aparência</div>
@@ -431,7 +458,7 @@ select.sel{appearance:none;width:100%;background:var(--graphite);border:1px soli
       <div class="styles" id="styles"></div>
       <div class="label">Afinador</div>
       <div class="list" id="setList"></div>
-      <div class="about"><img src="data:image/webp;base64,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" alt=""><b>NEXUS TUNER</b><br>versão 1.0 · Nexus Works Digital<br>Afinador · Metrônomo · Ferramentas</div>
+      <div class="about"><img src="data:image/webp;base64,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" alt=""><b>NEXUS TUNER</b><br><span id="aboutVer">versão 1.0</span> · Nexus Works Digital<br>Afinador · Metrônomo · Ferramentas</div>
     </section>
   </main>
 
@@ -468,6 +495,7 @@ const IC = {
   pause:'<rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/>',
   mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
   stop:'<rect x="6" y="6" width="12" height="12" rx="2"/>',
+  bell:'<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.6 2H4.4z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
   sliders:'<path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/>'
 };
 const svg = (n, cls='i', extra='') => `<svg class="${cls}" viewBox="0 0 24 24" ${extra}>${IC[n]}</svg>`;
@@ -545,7 +573,8 @@ if (mq && mq.addEventListener) mq.addEventListener('change', applyTheme);
 const VIEWS = {
   tuner:{tab:0}, tunings:{tab:0, title:'Afinações', back:'tuner'}, metro:{tab:1, title:'Metrônomo'},
   tools:{tab:2, title:'Ferramentas'}, tone:{tab:2, title:'Gerador de Tons', back:'tools'}, table:{tab:2, title:'Tabela de Notas', back:'tools'},
-  calib:{tab:2, title:'Calibrar A4', back:'tools'}, history:{tab:2, title:'Histórico', back:'tools'}, settings:{tab:3, title:'Configurações'}
+  calib:{tab:2, title:'Calibrar A4', back:'tools'}, history:{tab:2, title:'Histórico', back:'tools'}, settings:{tab:3, title:'Configurações'},
+  news:{tab:0, title:'Novidades', back:'tuner'}
 };
 let view = 'tuner';
 const NAV = [['tuner','Afinador','wave'],['metro','Metrônomo','metro'],['tools','Ferramentas','tools'],['settings','Mais','grid']];
@@ -555,9 +584,11 @@ function go(v){
   document.querySelectorAll('.view').forEach(e => e.classList.toggle('on', e.id === 'v-' + v));
   const cfg = VIEWS[v];
   if (v === 'tuner') {
-    $('top').innerHTML = `<button class="slot" id="tbMenu">${svg('menu')}</button><div class="wordmark"><b>NEXUS</b><span>TUNER</span></div><button class="slot" id="tbGear">${svg('gear')}</button>`;
+    $('top').innerHTML = `<div class="side"><button class="slot" id="tbMenu">${svg('menu')}</button></div><div class="wordmark"><b>NEXUS</b><span>TUNER</span></div><div class="side r"><button class="slot bell" id="tbBell" aria-label="Novidades">${svg('bell')}</button><button class="slot" id="tbGear">${svg('gear')}</button></div>`;
     $('tbMenu').onclick = () => go('tunings');
     $('tbGear').onclick = () => go('settings');
+    $('tbBell').onclick = () => go('news');
+    try { updateBadge(); } catch(e) {}   // ainda carregando
   } else {
     const back = cfg.back || 'tuner';
     $('top').innerHTML = `<button class="slot" id="tbBack">${svg('back')}</button><div class="ttl">${cfg.title}</div><div class="slot"></div>`;
@@ -565,7 +596,7 @@ function go(v){
   }
   $('nav').innerHTML = NAV.map(([id, l, ic], i) => `<button data-v="${id}" class="${i === cfg.tab ? 'on' : ''}">${svg(ic)}${l}</button>`).join('');
   $('main').scrollTop = 0;
-  ({tuner:renderTuner, tunings:renderTunings, metro:renderMetro, tools:renderTools, tone:renderTone, table:renderTable, calib:renderCalib, history:renderHistory, settings:renderSettings})[v]();
+  ({tuner:renderTuner, tunings:renderTunings, metro:renderMetro, tools:renderTools, tone:renderTone, table:renderTable, calib:renderCalib, history:renderHistory, settings:renderSettings, news:renderNews})[v]();
 }
 $('nav').addEventListener('click', e => { const b = e.target.closest('button'); if (b) go(b.dataset.v); });
 
@@ -1389,6 +1420,7 @@ const STYLE_PREV = {
 const PREC = [[1,'±1 cent'],[3,'±3 cents'],[5,'±5 cents']];
 const SENSL = [['baixa','Baixa'],['media','Média'],['alta','Alta']];
 function renderSettings(){
+  if ($('aboutVer')) $('aboutVer').textContent = versionLabel();
   $('themes').innerHTML = [['light','Claro','l'],['dark','Escuro','d'],['system','Sistema','s']].map(([v, l, c]) => `<button data-v="${v}" class="${S.theme === v ? 'on' : ''}"><span class="sw ${c}"><svg width="34" height="26" viewBox="0 0 60 46">${LOGO.replace(/lgS/g, 'lgS' + c).replace(/lgO/g, 'lgO' + c)}</svg></span>${l}</button>`).join('');
   $('styles').innerHTML = [['analog','Analógico'],['bars','Digital (barras)'],['wave','Onda']].map(([v, l]) => `<button data-v="${v}" class="${S.style === v ? 'on' : ''}">${STYLE_PREV[v]}${l}</button>`).join('');
   const row = (k, l, val) => `<button class="li" data-k="${k}"><span class="grow">${l}</span><span class="val">${val}</span>${svg('chev')}</button>`;
@@ -1396,6 +1428,7 @@ function renderSettings(){
   $('setList').innerHTML =
     row('precision', 'Precisão (afinado)', PREC.find(p => p[0] === S.precision)[1]) +
     row('a4', 'Frequência de Referência (A4)', S.a4 + ' Hz') +
+    row('news', 'Novidades e atualizações', unreadCount() ? `${unreadCount()} nova${unreadCount() > 1 ? 's' : ''}` : versionLabel()) +
     row('mic', 'Microfone: volume e sensibilidade', `${S.micVol}% · ${S.sensLvl}/10`) +
     tog('autoDetect', 'Detector automático de corda') +
     tog('refSound', 'Som de referência ao tocar na corda') +
@@ -1410,6 +1443,7 @@ $('setList').addEventListener('click', e => {
     const k = r.dataset.k;
     if (k === 'precision') pickSheet('Precisão', PREC, S.precision, v => { S.precision = v; save(); renderSettings(); });
     if (k === 'mic') openMicSheet();
+    if (k === 'news') go('news');
     if (k === 'a4') go('calib');
   } else if (t) { const k = t.dataset.t; S[k] = !S[k]; save(); renderSettings(); if (k === 'autoMic' && S.autoMic) { userPaused = false; autoBlocked = false; autoStart(); } }
 });
@@ -1443,6 +1477,94 @@ document.addEventListener('visibilitychange', () => {
   else setTimeout(autoStart, 300);
 });
 setTimeout(autoStart, 1800);
+
+// ================= Novidades e atualização automática =================
+const FEED_URL = 'https://nexusworksdigital.github.io/nexus-tuner/feed.json';
+const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.nexusworksdigital.nexustuner';
+const NA = window.NexusAndroid || null;                 // ponte com o app Android (versões 1.0.7+)
+const inAndroid = /NexusTunerApp/.test(navigator.userAgent);
+const curCode = () => { try { return NA ? NA.versionCode() : 0; } catch(e) { return 0; } };
+const curName = () => { try { return NA ? NA.versionName() : ''; } catch(e) { return ''; } };
+const selfUpdate = () => { try { return !!(NA && NA.canSelfUpdate()); } catch(e) { return false; } };
+const versionLabel = () => curName() ? 'versão ' + curName() : inAndroid ? 'app Android' : 'versão web (sempre atualizada)';
+const UP = { feed:null, checking:false, offline:false, lastCheck:0, phase:'idle', progress:0, error:'' };
+if (!Array.isArray(S.readNotifs)) S.readNotifs = [];
+try { const c = localStorage.getItem('ntFeed'); if (c) UP.feed = JSON.parse(c); } catch(e) {}
+const latest = () => UP.feed && UP.feed.latest;
+const hasUpdate = () => !!(inAndroid && latest() && latest().versionCode > curCode());
+const fdate = d => { const x = new Date(d + 'T12:00:00'); return isNaN(x) ? '' : x.toLocaleDateString('pt-BR', {day:'2-digit', month:'short', year:'numeric'}); };
+function notifications(){
+  const l = [];
+  if (hasUpdate()) { const r = latest(); l.push({id:'update-' + r.versionCode, type:'update', title:`Nova versão ${r.versionName} disponível`, body:(r.notes || [])[0] || 'Toque para ver as novidades.', date:r.date}); }
+  const news = ((UP.feed && UP.feed.news) || []).slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  return l.concat(news);
+}
+const unreadCount = () => notifications().filter(n => !S.readNotifs.includes(n.id)).length;
+function updateBadge(ring){
+  const b = $('tbBell'); if (!b) return;
+  const n = unreadCount();
+  b.querySelectorAll('.badge').forEach(e => e.remove());
+  if (n) b.insertAdjacentHTML('beforeend', `<span class="badge">${n > 9 ? '9+' : n}</span>`);
+  if (ring && n) { b.classList.remove('ring'); void b.offsetWidth; b.classList.add('ring'); }
+}
+async function checkFeed(manual){
+  if (UP.checking) return;
+  UP.checking = true; if (view === 'news') renderNews();
+  try {
+    const r = await fetch(FEED_URL + '?t=' + Date.now(), {cache:'no-store'});
+    if (!r.ok) throw new Error(r.status);
+    const txt = await r.text(); UP.feed = JSON.parse(txt); UP.offline = false;
+    try { localStorage.setItem('ntFeed', txt); } catch(e) {}
+  } catch(e) { UP.offline = true; }
+  UP.checking = false; UP.lastCheck = Date.now();
+  updateBadge(true);
+  if (hasUpdate()) {
+    const k = 'update-' + latest().versionCode;
+    if (S.toastedUpdate !== k) { S.toastedUpdate = k; save(); toast(`Nova versão ${latest().versionName} disponível 🔔`); }
+  } else if (manual) toast(UP.offline ? 'Sem internet no momento' : 'O app está atualizado ✓');
+  if (view === 'news') renderNews();
+  if (view === 'settings') renderSettings();
+}
+function renderNews(){
+  const r = latest(), up = hasUpdate();
+  let h = `<div class="card vcard"><div><b>Nexus Tuner</b><small>${versionLabel()}${UP.offline ? ' · sem internet' : UP.lastCheck ? ' · verificado agora' : ''}</small></div>
+    <button class="btn sec" id="nwCheck" style="padding:11px 14px;font-size:13.5px">${UP.checking ? 'Verificando…' : 'Verificar'}</button></div>`;
+  if (up) {
+    const busy = UP.phase === 'downloading' || UP.phase === 'installing';
+    h += `<div class="upcard"><h4>🚀 Versão ${r.versionName} disponível</h4><div class="dt">${fdate(r.date)}${curName() ? ' · você tem a ' + curName() : ''}</div>
+      ${(r.notes || []).length ? '<ul>' + r.notes.map(x => `<li>${x}</li>`).join('') + '</ul>' : ''}
+      ${busy ? `<div class="prog"><i style="width:${UP.phase === 'installing' ? 100 : UP.progress}%"></i></div><div style="font-size:12.5px;color:var(--muted)">${UP.phase === 'installing' ? 'Abrindo o instalador… toque em <b>Atualizar</b>.' : 'Baixando… ' + UP.progress + '%'}</div>`
+        : selfUpdate() ? `<button class="btn pri full" id="nwUpdate">Atualizar agora</button>`
+        : NA ? `<a class="btn pri full" href="${PLAY_URL}" style="text-decoration:none">Atualizar na Play Store</a>`
+        : `<a class="btn pri full" href="${r.apk}" style="text-decoration:none">Baixar a nova versão</a>`}
+      ${UP.phase === 'error' || UP.phase === 'permission' ? `<div class="uperr">${UP.error}</div>` : ''}</div>`;
+  }
+  const list = notifications().filter(n => n.type !== 'update');
+  if (!list.length && !up) h += `<div class="empty">Nenhuma novidade por enquanto.<br>Quando sair uma versão nova ou um aviso, ele aparece aqui.</div>`;
+  h += list.map(n => `<div class="ncard ${S.readNotifs.includes(n.id) ? '' : 'unread'}"><div class="t">${n.title}<small>${fdate(n.date)}</small></div>${n.body ? `<p>${n.body}</p>` : ''}${n.link ? `<a href="${n.link}">Saiba mais →</a>` : ''}</div>`).join('');
+  $('newsBox').innerHTML = h;
+  $('nwCheck').onclick = () => checkFeed(true);
+  if ($('nwUpdate')) $('nwUpdate').onclick = () => {
+    UP.phase = 'downloading'; UP.progress = 0; UP.error = ''; renderNews();
+    try { NA.startUpdate(r.apk, r.sha256 || ''); } catch(e) { UP.phase = 'error'; UP.error = 'Não foi possível iniciar a atualização.'; renderNews(); }
+  };
+  // abrir o sino marca tudo como lido
+  const ids = notifications().map(n => n.id), before = S.readNotifs.length;
+  ids.forEach(id => { if (!S.readNotifs.includes(id)) S.readNotifs.push(id); });
+  if (S.readNotifs.length !== before) { S.readNotifs = S.readNotifs.slice(-200); save(); }
+}
+// eventos vindos do Android durante a atualização
+window.nexusUpdateEvent = (type, value) => {
+  if (type === 'progress') { UP.phase = 'downloading'; UP.progress = +value || 0; }
+  else if (type === 'installing') UP.phase = 'installing';
+  else if (type === 'permission') { UP.phase = 'permission'; UP.error = 'Permita “Instalar apps desconhecidos” para o Nexus Tuner na tela que abriu e volte ao app — a instalação continua sozinha.'; }
+  else if (type === 'done') UP.phase = 'idle';
+  else if (type === 'error') { UP.phase = 'error'; UP.error = value === 'checksum' ? 'O arquivo baixado veio corrompido. Toque em Atualizar de novo.' : value === 'permission' ? 'Sem a permissão de instalar apps desta fonte a atualização não pode continuar.' : 'Não foi possível baixar a atualização. Verifique a internet e tente de novo.'; }
+  if (view === 'news') renderNews();
+};
+setTimeout(() => checkFeed(false), 2500);
+const _resume = window.nexusResume;
+window.nexusResume = () => { _resume && _resume(); if (Date.now() - UP.lastCheck > 30 * 60 * 1000) checkFeed(false); };
 window.nexusBack = () => {
   if ($('sheet').classList.contains('on')) { closeSheet(); return true; }
   if (view !== 'tuner') { go(VIEWS[view].back || 'tuner'); return true; }

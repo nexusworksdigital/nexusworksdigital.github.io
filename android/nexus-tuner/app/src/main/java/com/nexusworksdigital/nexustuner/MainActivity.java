@@ -40,6 +40,7 @@ public class MainActivity extends Activity {
 
     private WebView web;
     private PermissionRequest pendingMic;
+    private NexusBridge bridge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,10 @@ public class MainActivity extends Activity {
         ws.setAllowContentAccess(false);
         ws.setTextZoom(100);
         ws.setUserAgentString(ws.getUserAgentString() + " NexusTunerApp/" + versionName());
+
+        // Ponte com o JavaScript: versão instalada e atualização pelo sino
+        bridge = new NexusBridge(this, web);
+        web.addJavascriptInterface(bridge, "NexusAndroid");
 
         final WebViewAssetLoader loader = new WebViewAssetLoader.Builder()
                 .setDomain(HOST)
@@ -153,6 +158,12 @@ public class MainActivity extends Activity {
             pendingMic.deny();
         }
         pendingMic = null;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == NexusBridge.REQ_INSTALL && bridge != null) bridge.onInstallPermissionResult();
     }
 
     private void handleBack() {

@@ -1,0 +1,3 @@
+Sino de novidades: avisa quando sai uma versão nova e atualiza o app com um toque
+Volume e sensibilidade do microfone, com medidor de nível ao vivo
+Ponteiro mais ágil na hora de afinar

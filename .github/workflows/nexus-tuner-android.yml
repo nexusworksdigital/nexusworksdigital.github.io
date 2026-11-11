@@ -2,6 +2,10 @@ name: Nexus Tuner – Android (APK + AAB)
 
 # Roda sozinho quando o app (nexus-tuner/app) ou o projeto Android mudam,
 # ou manualmente em Actions › "Nexus Tuner – Android" › Run workflow.
+# Gera o APK do site (com atualização pelo sino) e o AAB da Play Store (sem),
+# publica na release "nexus-tuner" e atualiza nexus-tuner/feed.json — é isso
+# que faz aparecer "Nova versão disponível" no sino do app.
+# As novidades da versão vêm de android/nexus-tuner/novidades.txt (uma por linha).
 on:
   push:
     branches: [main]
@@ -58,9 +62,9 @@ jobs:
         run: |
           chmod +x gradlew
           if [ "$SIGNED" = "1" ]; then
-            ./gradlew --no-daemon --stacktrace assembleRelease bundleRelease
+            ./gradlew --no-daemon --stacktrace assembleSiteRelease bundlePlayRelease
           else
-            ./gradlew --no-daemon --stacktrace assembleDebug assembleRelease bundleRelease
+            ./gradlew --no-daemon --stacktrace assembleSiteDebug assembleSiteRelease bundlePlayRelease
           fi
 
       - name: Separar arquivos
@@ -68,10 +72,10 @@ jobs:
           mkdir -p dist
           OUT=android/nexus-tuner/app/build/outputs
           if [ "$SIGNED" = "1" ]; then
-            cp $OUT/apk/release/app-release.apk dist/NexusTuner.apk
-            cp $OUT/bundle/release/app-release.aab dist/NexusTuner.aab
+            cp $OUT/apk/site/release/app-site-release.apk dist/NexusTuner.apk
+            cp $OUT/bundle/playRelease/app-play-release.aab dist/NexusTuner.aab
           else
-            cp $OUT/apk/debug/app-debug.apk dist/NexusTuner-teste.apk
+            cp $OUT/apk/site/debug/app-site-debug.apk dist/NexusTuner-teste.apk
           fi
           ls -la dist
 
@@ -93,3 +97,30 @@ jobs:
           else
             gh release create nexus-tuner dist/NexusTuner.apk dist/NexusTuner.aab --title "Nexus Tuner $V" --notes "$NOTES"
           fi
+
+      - name: Atualizar o feed do app (aviso no sino)
+        if: env.SIGNED == '1'
+        run: |
+          python3 - <<'PY'
+          import json, hashlib, datetime, pathlib
+          code = int('${{ github.run_number }}')
+          name = f'1.0.{code}'
+          sha = hashlib.sha256(open('dist/NexusTuner.apk', 'rb').read()).hexdigest()
+          nov = pathlib.Path('android/nexus-tuner/novidades.txt')
+          notes = [l.strip() for l in nov.read_text(encoding='utf-8').splitlines() if l.strip()] if nov.exists() else []
+          p = pathlib.Path('nexus-tuner/feed.json')
+          feed = json.loads(p.read_text(encoding='utf-8')) if p.exists() else {'news': []}
+          feed['latest'] = {
+            'versionCode': code, 'versionName': name,
+            'date': datetime.date.today().isoformat(), 'notes': notes,
+            'apk': 'https://github.com/nexusworksdigital/nexusworksdigital.github.io/releases/download/nexus-tuner/NexusTuner.apk',
+            'sha256': sha,
+          }
+          p.write_text(json.dumps(feed, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(feed['latest'], ensure_ascii=False, indent=2))
+          PY
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add nexus-tuner/feed.json
+          git commit -m "Nexus Tuner: nova versão no feed (aviso no sino)" || exit 0
+          for i in 1 2 3; do git pull --rebase -q origin main && git push && break; sleep 5; done

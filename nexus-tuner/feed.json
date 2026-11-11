@@ -1,0 +1,23 @@
+{
+  "news": [
+    {
+      "id": "boas-vindas-1",
+      "type": "news",
+      "title": "Bem-vindo ao Nexus Tuner!",
+      "body": "Agora as novidades e as novas versões chegam por aqui, no sino.",
+      "date": "2026-11-11",
+      "link": "https://nexusworksdigital.github.io/nexus-tuner/"
+    }
+  ],
+  "latest": {
+    "versionCode": 6,
+    "versionName": "1.0.6",
+    "date": "2026-11-11",
+    "notes": [
+      "Volume e sensibilidade do microfone, com medidor de nível ao vivo",
+      "Ponteiro mais ágil na hora de afinar"
+    ],
+    "apk": "https://github.com/nexusworksdigital/nexusworksdigital.github.io/releases/download/nexus-tuner/NexusTuner.apk",
+    "sha256": "a5533ddd89b6876b139499e627ee892a91a3d2dd8cb0d16254b84956844c4b5b"
+  }
+}
