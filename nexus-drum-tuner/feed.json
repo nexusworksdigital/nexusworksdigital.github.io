@@ -8,5 +8,21 @@
       "date": "2026-11-11",
       "link": "https://nexusworksdigital.github.io/nexus-drum-tuner/#ouvir"
     }
-  ]
+  ],
+  "latest": {
+    "versionCode": 6,
+    "versionName": "1.2.0",
+    "date": "2026-11-11",
+    "notes": [
+      "Sino de notificações com novidades e avisos da Nexus",
+      "Atualização automática: baixe e instale a nova versão direto pelo app",
+      "Ícone novo do Nexus Drum Tuner",
+      "Visual Studio Professional com 6 páginas: Tuner, Lugs, Espectro, Kit, Presets e Ajustes",
+      "Drum Balance e Antes & Depois para comparar suas medições"
+    ],
+    "apk_arm64": "https://github.com/nexusworksdigital/nexusworksdigital.github.io/releases/download/nexus-drum-tuner/NexusDrumTuner-arm64.apk",
+    "apk_armv7": "https://github.com/nexusworksdigital/nexusworksdigital.github.io/releases/download/nexus-drum-tuner/NexusDrumTuner-armv7.apk",
+    "sha256_arm64": "7f27fe4f4ed76910f233918a8a9137d42af718d171392aa081a224b61582f55f",
+    "sha256_armv7": "78b4695d8067fa8da5478d3f0a77a2d25b4abb0b33581a616e4d6562f3ab285d"
+  }
 }
