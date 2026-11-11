@@ -52,6 +52,23 @@ jobs:
           for G in android/app/build.gradle.kts android/app/build.gradle; do
             [ -f $G ] && sed -i -E 's/minSdk\s*=\s*flutter\.minSdkVersion/minSdk = 23/; s/minSdkVersion\s+flutter\.minSdkVersion/minSdkVersion 23/' $G
           done
+          # ota_update exige "core library desugaring"
+          python3 - <<'PY'
+          import re, pathlib
+          k = pathlib.Path('android/app/build.gradle.kts')
+          if k.exists():
+              t = k.read_text()
+              t = t.replace('compileOptions {', 'compileOptions {\n        isCoreLibraryDesugaringEnabled = true', 1)
+              t += '\ndependencies {\n    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")\n}\n'
+              k.write_text(t)
+          else:
+              g = pathlib.Path('android/app/build.gradle')
+              t = g.read_text()
+              t = t.replace('compileOptions {', 'compileOptions {\n        coreLibraryDesugaringEnabled true', 1)
+              t += "\ndependencies {\n    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'\n}\n"
+              g.write_text(t)
+          PY
+          cat android/app/build.gradle* | head -60
           cat $M
           flutter pub get
           dart run flutter_launcher_icons
