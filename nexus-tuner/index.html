@@ -15,7 +15,7 @@
   <meta property="og:locale" content="pt_BR">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="img/favicon.png">
-  <link rel="stylesheet" href="../assets/estilo.css?v=4">
+  <link rel="stylesheet" href="../assets/nexus.css?v=2">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"SoftwareApplication","name":"Nexus Tuner","applicationCategory":"MultimediaApplication","operatingSystem":"Android, Web","offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},"publisher":{"@type":"Organization","name":"Nexus Works Digital"}}
   </script>
@@ -45,84 +45,133 @@
     .destaque { border-left-color: #FF6A00; }
   </style>
 </head>
-<body>
+<body class="laranja">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-casa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h5v-6h4v6h5V9.5"/></symbol>
+    <symbol id="i-grade" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 19h16"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M10 8.5v7l6-3.5z" fill="currentColor"/></symbol>
+    <symbol id="i-fone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4.5" height="6" rx="1.5"/><rect x="16.5" y="14" width="4.5" height="6" rx="1.5"/><path d="M19 20a4 4 0 0 1-4 2.5h-2"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r=".6" fill="currentColor"/></symbol>
+    <symbol id="i-camadas" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="m12 3 9 4.5-9 4.5-9-4.5z"/><path d="m3 12 9 4.5 9-4.5"/><path d="m3 16.5 9 4.5 9-4.5"/></symbol>
+    <symbol id="i-gauge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4.5 18a9 9 0 1 1 15 0"/><path d="m12 13 4-5"/><circle cx="12" cy="13.5" r="1.4" fill="currentColor"/></symbol>
+    <symbol id="i-chave" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a4 4 0 0 0 5 5L21 13l-7 7a2.1 2.1 0 0 1-3-3l7-7-1.5-1.5z"/><path d="M14.7 6.3 11 2.6a4 4 0 0 0-5 5l1.2 1.2"/><path d="m3 21 6-6"/></symbol>
+    <symbol id="i-bomba" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V5a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v16"/><path d="M3 21h13"/><path d="M6.5 7h6v4h-6z"/><path d="M15 9h2a2 2 0 0 1 2 2v5a1.5 1.5 0 0 0 3 0V8l-3-3"/></symbol>
+    <symbol id="i-voz" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 10v4M7 7v10M11 4v16M15 8v8M19 6v12M23 10v4"/></symbol>
+    <symbol id="i-folha" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20c0-9 6-15 15-16-1 9-7 15-15 16z"/><path d="M5 20 13 12"/></symbol>
+    <symbol id="i-peca" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M9 3h3a2 2 0 1 1 4 0h3v5a2 2 0 1 0 0 4v5h-5a2 2 0 1 0-4 0H5v-5a2 2 0 1 1 0-4V3z" transform="translate(0 2)"/></symbol>
+    <symbol id="i-raio" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 2 4 14h7l-1.5 8L20 10h-7z"/></symbol>
+    <symbol id="i-atualizar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 0 0-14.5-4.5L4 8"/><path d="M4 3v5h5"/><path d="M4 13a8 8 0 0 0 14.5 4.5L20 16"/><path d="M20 21v-5h-5"/></symbol>
+    <symbol id="i-escudo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 4 5.5v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10v-6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></symbol>
+    <symbol id="i-pessoas" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="3.2"/><circle cx="5" cy="9.5" r="2.4"/><circle cx="19" cy="9.5" r="2.4"/><path d="M6.5 20a5.5 5.5 0 0 1 11 0"/><path d="M1.5 19a3.8 3.8 0 0 1 4.5-3.6M22.5 19a3.8 3.8 0 0 0-4.5-3.6"/></symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="15" height="11" rx="1.5"/><path d="M7 19h6M10 15v4"/><rect x="17" y="9" width="5" height="10" rx="1.2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="m7.5 12.5 3 3 6-6.5"/></symbol>
+    <symbol id="i-foguete" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4c3-1.5 6-1 6-1s.5 3-1 6l-7 7-5-5z"/><path d="M7 11 4 11l3-4h4M13 17v3l4-3v-4"/><path d="M5.5 15.5 3 21l5.5-2.5"/><circle cx="15.5" cy="8.5" r="1.4"/></symbol>
+    <symbol id="i-envelope" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3 6.5 9 7 9-7"/></symbol>
+    <symbol id="i-seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-esq" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></symbol>
+    <symbol id="i-dir" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-musica" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></symbol>
+    <symbol id="i-livro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H20v15H5.5A1.5 1.5 0 0 0 4 19.5z"/><path d="M4 19.5A1.5 1.5 0 0 0 5.5 21H20v-3"/></symbol>
+    <symbol id="i-celular" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M11 18.5h2"/></symbol>
+    <symbol id="i-windows" viewBox="0 0 24 24" fill="#2b8cff"><path d="M2 4.5 10.2 3.4v8.1H2zM11.2 3.2 22 1.7v9.8H11.2zM2 12.5h8.2v8.1L2 19.5zM11.2 12.5H22v9.8l-10.8-1.5z"/></symbol>
+    <symbol id="i-android" viewBox="0 0 24 24" fill="#78c257"><path d="M6 9h12v8.5a1.5 1.5 0 0 1-1.5 1.5H15v2.8a1.2 1.2 0 0 1-2.4 0V19h-1.2v2.8a1.2 1.2 0 0 1-2.4 0V19H7.5A1.5 1.5 0 0 1 6 17.5zM3.8 9a1.2 1.2 0 0 1 1.2 1.2v5a1.2 1.2 0 0 1-2.4 0v-5A1.2 1.2 0 0 1 3.8 9zm16.4 0a1.2 1.2 0 0 1 1.2 1.2v5a1.2 1.2 0 0 1-2.4 0v-5A1.2 1.2 0 0 1 20.2 9zM6.1 8a6 6 0 0 1 3-4.4L8 1.8l.6-.3 1.2 1.8a6.3 6.3 0 0 1 4.4 0l1.2-1.8.6.3-1.1 1.8A6 6 0 0 1 17.9 8zM9.5 5.2a.7.7 0 1 0 0 1.4.7.7 0 0 0 0-1.4zm5 0a.7.7 0 1 0 0 1.4.7.7 0 0 0 0-1.4z"/></symbol>
+    <symbol id="i-apple" viewBox="0 0 24 24" fill="#eef2f7"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9a4.8 4.8 0 0 0-3.8-2c-1.6-.2-3.1.9-3.9.9s-2-.9-3.4-.9a5 5 0 0 0-4.2 2.6c-1.8 3.1-.5 7.7 1.3 10.2.8 1.2 1.8 2.6 3.1 2.5 1.3 0 1.7-.8 3.2-.8s1.9.8 3.2.8 2.2-1.2 3-2.4a10 10 0 0 0 1.4-2.8 4.3 4.3 0 0 1-2.1-4.2zM13.9 5a4.3 4.3 0 0 0 1-3.2 4.5 4.5 0 0 0-2.9 1.5 4.2 4.2 0 0 0-1 3.1A3.7 3.7 0 0 0 13.9 5z"/></symbol>
+    <symbol id="i-mac" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="4.5" fill="#3fa9f5"/><path d="M12 2h5.5A4.5 4.5 0 0 1 22 6.5v11a4.5 4.5 0 0 1-4.5 4.5H12z" fill="#e8f2fb"/><path d="M12.6 2c-1.6 3.6-2.4 7-2.2 10.6h2.7c-.2 3 0 6 .7 9.4" fill="none" stroke="#123" stroke-width="1.3"/><circle cx="7.5" cy="8.5" r="1" fill="#123"/><circle cx="16.5" cy="8.5" r="1" fill="#123"/><path d="M6.5 15.5c3.2 2.3 7.8 2.3 11 0" fill="none" stroke="#123" stroke-width="1.3" stroke-linecap="round"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5A10.5 10.5 0 0 0 8.7 22c.5.1.7-.2.7-.5v-1.8c-2.9.6-3.5-1.4-3.5-1.4-.5-1.2-1.2-1.5-1.2-1.5-.9-.6.1-.6.1-.6 1 .1 1.6 1.1 1.6 1.1.9 1.6 2.5 1.1 3.1.9.1-.7.4-1.1.7-1.4-2.3-.3-4.8-1.2-4.8-5.2 0-1.1.4-2.1 1.1-2.8-.1-.3-.5-1.4.1-2.8 0 0 .9-.3 2.9 1.1a10 10 0 0 1 5.2 0c2-1.4 2.9-1.1 2.9-1.1.6 1.4.2 2.5.1 2.8.7.8 1.1 1.7 1.1 2.8 0 4-2.5 4.9-4.8 5.2.4.3.7 1 .7 1.9v2.9c0 .3.2.6.7.5A10.5 10.5 0 0 0 12 1.5z"/></symbol>
+  </defs>
+</svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-diapasao" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 2v8a5 5 0 0 0 10 0V2"/><path d="M12 15v7"/></symbol>
+  <symbol id="i-metronomo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 3h5l4.5 18H5z"/><path d="m12 16 5-9"/><path d="M7 17h10"/></symbol>
+  <symbol id="i-ajustes" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="8" cy="6" r="2.2" fill="#0a0a0a"/><circle cx="15" cy="12" r="2.2" fill="#0a0a0a"/><circle cx="10" cy="18" r="2.2" fill="#0a0a0a"/></symbol>
+  <symbol id="i-tabela" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="4" width="19" height="16" rx="2"/><path d="M2.5 9.5h19M2.5 14.5h19M8.5 4v16M14.5 4v16"/></symbol>
+  <symbol id="i-violao" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14 10 6-6"/><path d="m18 2 4 4"/><path d="M11 9.5a4 4 0 0 0-5.5.5 3.5 3.5 0 0 0-.8 3.5 3 3 0 0 0-2.2 1A3.6 3.6 0 0 0 7.6 20a3 3 0 0 0 1-2.2 3.5 3.5 0 0 0 3.5-.8 4 4 0 0 0 .5-5.5z"/><circle cx="9.5" cy="14.5" r="1.4"/></symbol>
+  <symbol id="i-micro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="8.5" y="2.5" width="7" height="12" rx="3.5"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8.5 22h7"/></symbol>
+  <symbol id="i-notebook" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="4" width="16" height="11" rx="1.5"/><path d="M2 19h20l-2-4H4z"/></symbol>
+  <symbol id="i-externo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-play2" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4v16l14-8z"/></symbol>
+  <symbol id="i-escudo2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5 4 5.5v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10v-6z"/></symbol>
+</defs></svg>
+
   <header class="topo">
-    <div class="conteudo">
-      <a class="marca" href="../"><span class="nwd">NEXUS <b>WORKS</b> DIGITAL</span></a>
+    <div class="c">
+      <a class="marca" href="../"><img src="../assets/nwd_simbolo_ciano.png" alt="" style="filter:hue-rotate(185deg) saturate(1.4) drop-shadow(0 0 10px rgba(255,140,30,.5))"><span class="txt"><b>NEXUS</b><small>WORKS DIGITAL</small></span></a>
       <nav>
-        <a href="../#apps" class="ocultar">Apps</a>
-        <a href="#recursos">Recursos</a>
-        <a href="#baixar">Baixar</a>
+        <a class="ativo" href="./"><svg><use href="#i-casa"/></svg>Início</a>
+        <a href="../#apps"><svg><use href="#i-grade"/></svg>Apps</a>
+        <a href="#recursos"><svg><use href="#i-camadas"/></svg>Recursos</a>
+        <a href="#baixar"><svg><use href="#i-download"/></svg>Baixar</a>
       </nav>
     </div>
   </header>
-  <div class="trilha conteudo"><a href="../">Início</a> › <a href="../#apps">Apps</a> › <span>Nexus Tuner</span></div>
 
   <main>
-    <div class="conteudo hero">
-      <img class="logo" src="img/icone.png" alt="Nexus Tuner">
-      <div class="wm"><b>NEXUS</b><span>TUNER</span></div>
-      <h1>Afine seu violão, guitarra e baixo em segundos.</h1>
-      <p class="sub">Afinador preciso, metrônomo com 9 sons e ferramentas para músicos. Grátis, sem anúncios e funciona até sem internet.</p>
-      <div class="botoes" id="baixar">
-        <a class="botao" href="app/">▶ Usar agora <small>No navegador do celular ou PC</small></a>
-        <a class="botao" href="https://github.com/nexusworksdigital/nexusworksdigital.github.io/releases/download/nexus-tuner/NexusTuner.apk">📱 Baixar para Android <small>App (APK)</small></a>
-        <span class="botao desligado">Google Play <small>Em breve</small></span>
+    <div class="c hero">
+      <div>
+        <img src="../assets/tuner_logo.png" alt="Nexus Tuner" style="width:min(420px,90%)">
+        <h1 style="margin-top:18px">Afine seu instrumento.<br><em>Encontre seu som.</em></h1>
+        <p class="sub">Afinador preciso, metrônomo e ferramentas para músicos. Grátis, sem anúncios.</p>
+        <div class="botoes">
+          <a class="bt cheio" href="app/"><svg><use href="#i-play2"/></svg><span>Usar agora<br><small style="font-weight:500">No navegador</small></span></a>
+          <a class="bt" href="https://github.com/nexusworksdigital/nexusworksdigital.github.io/releases/download/nexus-tuner/NexusTuner.apk"><svg><use href="#i-android"/></svg><span>Baixar para Android<br><small style="font-weight:500;color:#c5d0de">App (APK)</small></span></a>
+        </div>
+        <div class="check-l"><span><svg><use href="#i-check"/></svg>Grátis</span><span><svg><use href="#i-check"/></svg>Sem anúncios</span><span><svg><use href="#i-check"/></svg>Funciona offline</span></div>
       </div>
-      <p class="nota">Grátis · Sem anúncios · O áudio do microfone nunca sai do seu aparelho</p>
+      <div class="arte"><img src="../assets/tuner_hero.jpg" alt="Nexus Tuner no celular e no computador"></div>
     </div>
 
-    <section class="conteudo">
+    <section class="c" id="recursos">
+      <div class="destaques">
+        <div class="cartao"><svg class=ic><use href="#i-diapasao"/></svg><div><h3>Afinador preciso</h3><p>Afine violão, guitarra, baixo e outros instrumentos com precisão de até ±1 cent e resposta rápida.</p></div></div>
+        <div class="cartao"><svg class=ic><use href="#i-metronomo"/></svg><div><h3>Metrônomo com 9 sons</h3><p>Clássico, madeira, clave, cowbell, chimbal e mais. Compassos, acento e tap tempo.</p></div></div>
+        <div class="cartao"><svg class=ic><use href="#i-ajustes"/></svg><div><h3>Afinações alternativas</h3><p>Drop D, Drop C, Open G, DADGAD, meio tom abaixo e muito mais. Crie e salve as suas.</p></div></div>
+        <div class="cartao"><svg class=ic><use href="#i-tabela"/></svg><div><h3>Tabela de notas</h3><p>Consulte as notas no braço do instrumento e aprimore seus estudos e acordes.</p></div></div>
+      </div>
+    </section>
+
+    <section class="c">
+      <div class="titulo"><div><h2>Tudo o que você precisa para praticar</h2><p>Um conjunto completo de ferramentas, em um só aplicativo.</p></div></div>
       <div class="telas">
-        <figure><img src="img/tela-afinador.jpg" alt="Afinador analógico mostrando a corda Mi afinada" loading="lazy"><figcaption>Afinador</figcaption></figure>
-        <figure><img src="img/tela-metronomo.jpg" alt="Metrônomo com 120 BPM e escolha de sons" loading="lazy"><figcaption>Metrônomo com 9 sons</figcaption></figure>
-        <figure><img src="img/tela-afinacoes.jpg" alt="Lista de afinações alternativas" loading="lazy"><figcaption>Afinações alternativas</figcaption></figure>
-        <figure><img src="img/tela-tabela.jpg" alt="Tabela de notas no braço do instrumento" loading="lazy"><figcaption>Tabela de notas</figcaption></figure>
-        <figure><img src="img/tela-config.jpg" alt="Configurações com tema e estilo do afinador" loading="lazy"><figcaption>Do seu jeito</figcaption></figure>
+        <figure><img src="img/tela-afinador.jpg" alt="Afinador analógico mostrando a corda afinada" loading="lazy"><figcaption>Afinador</figcaption></figure>
+        <figure><img src="img/tela-metronomo.jpg" alt="Metrônomo com 120 BPM" loading="lazy"><figcaption>Metrônomo</figcaption></figure>
+        <figure><img src="img/tela-afinacoes.jpg" alt="Lista de afinações alternativas" loading="lazy"><figcaption>Afinações</figcaption></figure>
+        <figure><img src="img/tela-tabela.jpg" alt="Tabela de notas no braço" loading="lazy"><figcaption>Tabela de Notas</figcaption></figure>
+        <figure><img src="img/tela-config.jpg" alt="Configurações do afinador" loading="lazy"><figcaption>Configurações</figcaption></figure>
       </div>
     </section>
 
-    <section class="conteudo" id="recursos">
-      <h2>Recursos</h2>
-      <p class="intro">Tudo que você precisa para afinar e praticar, num app só.</p>
-      <div class="grade">
-        <div class="cartao"><div class="icone">🎯</div><h3>Afinação precisa</h3><p>Detecta a nota em tempo real com precisão de até ±1 cent. Reconhece sozinho qual corda você tocou.</p></div>
-        <div class="cartao"><div class="icone">🎸</div><h3>Violão, guitarra e baixo</h3><p>Baixo de 4 e 5 cordas, modo cromático para qualquer instrumento e o tom de referência de cada corda.</p></div>
-        <div class="cartao"><div class="icone">🎚️</div><h3>Afinações alternativas</h3><p>Drop D, Drop C, Drop B, Open G, Open D, DADGAD, meio tom abaixo e mais. Crie e salve as suas.</p></div>
-        <div class="cartao"><div class="icone">🥁</div><h3>Metrônomo com 9 sons</h3><p>Clássico, madeira, clave, cowbell, chimbal, bateria, mecânico e outros. Compassos, acento e tap tempo.</p></div>
-        <div class="cartao"><div class="icone">🧰</div><h3>Ferramentas</h3><p>Gerador de tons, tabela de notas no braço, calibração do Lá (432 a 446 Hz) e histórico das afinações.</p></div>
-        <div class="cartao"><div class="icone">🎨</div><h3>Do seu jeito</h3><p>Três estilos de mostrador (analógico, digital e onda), tema claro ou escuro e ajuste de precisão e sensibilidade.</p></div>
+    <section class="c" id="como">
+      <div class="titulo"><div><h2>Como funciona</h2><p>Simples, rápido e direto ao ponto.</p></div></div>
+      <div class="etapas">
+        <div class="cartao"><span class="num">1</span><svg class=ic><use href="#i-violao"/></svg><div><h3>Escolha o instrumento</h3><p>Violão, guitarra, baixo ou cromático, e a afinação que quiser.</p></div></div>
+        <svg><use href="#i-dir"/></svg>
+        <div class="cartao"><span class="num">2</span><svg class=ic><use href="#i-micro"/></svg><div><h3>Permita o microfone</h3><p>O som é analisado no próprio aparelho e nunca é gravado nem enviado.</p></div></div>
+        <svg><use href="#i-dir"/></svg>
+        <div class="cartao"><span class="num">3</span><svg class=ic><use href="#i-check"/></svg><div><h3>Afine até ficar verde</h3><p>Toque uma corda solta e ajuste a tarraxa até o indicador mostrar que está afinada.</p></div></div>
       </div>
     </section>
 
-    <section class="conteudo" id="como">
-      <h2>Como afinar</h2>
-      <p class="intro">Leva menos de um minuto.</p>
-      <ol class="passos">
-        <li><b>Escolha o instrumento</b> <span>e a afinação: Guitarra, Violão, Baixo ou Cromático.</span></li>
-        <li><b>Toque em “Ouvir”</b> <span>e permita o microfone. O áudio é analisado no próprio aparelho e não é gravado.</span></li>
-        <li><b>Toque uma corda solta.</b> <span>O app reconhece a corda sozinho. Se o ponteiro estiver vermelho, aperte (↑) ou afrouxe (↓) a tarraxa.</span></li>
-        <li><b>Ficou verde?</b> <span>A corda está afinada e ganha um ✓. Passe para a próxima.</span></li>
-      </ol>
-    </section>
-
-    <section class="conteudo" id="instalar">
-      <h2>Instalar no celular</h2>
-      <p class="intro">Escolha o jeito que preferir.</p>
-      <div class="duas">
-        <div class="cartao"><div class="icone">🤖</div><h3>Android (APK)</h3><p>Baixe o <i>NexusTuner.apk</i> no botão acima e abra o arquivo. Se pedir, permita “instalar apps desta fonte”.</p></div>
-        <div class="cartao"><div class="icone">🌐</div><h3>Pelo navegador (Android e iPhone)</h3><p>Abra <a href="app/">o app no navegador</a>. No Chrome toque em ⋮ › <i>Adicionar à tela inicial</i>; no iPhone (Safari) toque em Compartilhar › <i>Adicionar à Tela de Início</i>. Ele vira um ícone e funciona offline.</p></div>
+    <section class="c" id="baixar">
+      <div class="titulo"><div><h2>Disponível em várias plataformas</h2><p>Use direto no navegador ou baixe no seu dispositivo.</p></div></div>
+      <div class="plataf3">
+        <a class="dl" href="https://github.com/nexusworksdigital/nexusworksdigital.github.io/releases/download/nexus-tuner/NexusTuner.apk"><svg><use href="#i-android"/></svg><span><b>Android (APK)</b><small>Baixe e instale no seu celular ou tablet.</small></span><svg class=seta><use href="#i-download"/></svg></a>
+        <a class="dl ios" href="app/"><svg><use href="#i-apple"/></svg><span><b>iPhone e iPad</b><small>Use pelo navegador, sem instalar.</small></span><svg class=seta><use href="#i-externo"/></svg></a>
+        <a class="dl" href="app/"><svg><use href="#i-notebook"/></svg><span><b>Usar no Navegador</b><small>Funciona em PC, Mac, tablet e celular.</small></span><svg class=seta><use href="#i-play2"/></svg></a>
       </div>
+      <p class="nota">No navegador, toque em <i>Adicionar à tela inicial</i> (Chrome: ⋮ › Adicionar à tela inicial · Safari: Compartilhar › Adicionar à Tela de Início). Ele vira um ícone e funciona offline. Se o Android pedir, permita “instalar apps desta fonte” para o APK.</p>
     </section>
   </main>
 
   <footer>
-    <div class="conteudo">
-      <div>
-        <a href="privacidade.html">Política de privacidade</a>
-        <a href="mailto:nexusworksdigital@gmail.com">Contato</a>
+    <div class="c">
+      <div class="linha">
+        <a class="marca" href="../"><img src="../assets/nwd_simbolo_ciano.png" alt=""><span class="txt" style="display:block"><b>NEXUS</b><small>WORKS DIGITAL</small></span></a>
+        <span class="lema-r" style="font-style:normal;letter-spacing:1px">NEXUS TUNER · Afinador e ferramentas para músicos</span>
+        <nav><a href="privacidade.html"><svg><use href="#i-escudo2"/></svg>Política de Privacidade</a><a href="mailto:nexusworksdigital@gmail.com"><svg><use href="#i-envelope"/></svg>Contato</a></nav>
       </div>
-      <div>© 2026 <a href="../">Nexus Works Digital</a> · Nexus Tuner</div>
+      <div class="legal"><span>© 2026 Nexus Works Digital · Nexus Tuner</span></div>
     </div>
   </footer>
 </body>
