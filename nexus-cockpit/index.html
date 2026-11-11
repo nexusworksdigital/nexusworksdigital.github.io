@@ -93,7 +93,7 @@
         <a class="dl pc" href="https://github.com/cildojuniorbt-cmd/Paineis-De-Instrumentos-Nexus-cockpit/releases/download/Pain%C3%A9is/NexusCockpit_Setup.exe"><svg><use href="#i-windows"/></svg><svg class=seta><use href="#i-download"/></svg><span><b>Baixar para PC</b><small>Programa + plugin · <span data-versao="programa">v1.9.1</span></small></span></a>
         <a class="dl android" href="https://github.com/cildojuniorbt-cmd/Paineis-De-Instrumentos-Nexus-cockpit/releases/download/Pain%C3%A9is/NexusCockpit.apk"><svg><use href="#i-android"/></svg><svg class=seta><use href="#i-download"/></svg><span><b>Baixar para Android</b><small>App (APK) · <span data-versao="app">v1.9.2</span></small></span></a>
         <a class="dl ios" href="#iphone"><svg><use href="#i-apple"/></svg><svg class=seta><use href="#i-download"/></svg><span><b>iPhone e iPad</b><small>Pelo navegador · sem instalar</small></span></a>
-        <div class="dl mac breve"><span class="tag">EM BREVE</span><svg><use href="#i-mac"/></svg><svg class=seta><use href="#i-download"/></svg><span><b>Baixar para macOS</b><small>App nativo</small></span></div>
+        <a class="dl mac" href="https://github.com/cildojuniorbt-cmd/Paineis-De-Instrumentos-Nexus-cockpit/releases/download/Pain%C3%A9is/NexusCockpit_Mac.dmg"><span class="tag">NOVO</span><svg><use href="#i-mac"/></svg><svg class=seta><use href="#i-download"/></svg><span><b>Baixar para macOS</b><small>Programa + painel · <span data-versao="mac">v1.9.3</span></small></span></a>
       </div>
       <p class="nota"><a href="https://github.com/cildojuniorbt-cmd/Paineis-De-Instrumentos-Nexus-cockpit/releases/download/Pain%C3%A9is/Manual_Nexus_Cockpit.pdf">📘 Manual com todas as funções (PDF)</a> · Grátis · O app e o programa se atualizam sozinhos.</p>
     </div>
@@ -237,7 +237,7 @@
         }).join('');
         desenharPontos();
       }
-      var v = { app: j.app && j.app.versao, programa: j.programa && j.programa.versao };
+      var v = { app: j.app && j.app.versao, programa: j.programa && j.programa.versao, mac: j.mac && j.mac.versao };
       [].forEach.call(document.querySelectorAll('[data-versao]'), function (el) { var x = v[el.dataset.versao]; if (x) el.textContent = 'v' + x; });
     }).catch(function () {});
   })();
