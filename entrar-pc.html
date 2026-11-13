@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Entrar - Nexus Cockpit</title>
+<style>
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#07101c;color:#fff;font-family:system-ui,sans-serif}
+  .c{max-width:380px;padding:32px;text-align:center}
+  button{display:block;width:100%;margin:12px 0;padding:14px;border-radius:12px;border:1px solid #2a4a6a;background:#0e2236;color:#fff;font-size:16px;cursor:pointer}
+  button:hover{background:#143152}
+  #m{margin-top:16px;color:#9fb3c8;font-size:14px;min-height:20px}
+</style>
+</head>
+<body>
+<div class="c">
+  <h2>Entrar no Nexus Cockpit</h2>
+  <p style="color:#9fb3c8">Escolha como entrar. Depois volte ao programa no seu PC.</p>
+  <button id="google">Continuar com Google</button>
+  <button id="apple" style="display:none">Continuar com Apple</button>
+  <div id="m"></div>
+</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, OAuthProvider } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyAoatrFI3jaP6ZDgTTPJH_faAvHXOj1-Dk",
+  authDomain: "nexus-cockpit-b870a.firebaseapp.com",
+  projectId: "nexus-cockpit-b870a"
+});
+const auth = getAuth(app);
+const q = new URLSearchParams(location.search);
+const porta = q.get("porta"), estado = q.get("estado");
+const msg = t => document.getElementById("m").textContent = t;
+
+// so aceita porta numerica (o programa escuta em 127.0.0.1) e um codigo de estado
+if (!/^\d{2,5}$/.test(porta || "") || !/^[a-z0-9]{10,64}$/.test(estado || "")) {
+  msg("Abra esta página pelo botão de login do programa Nexus Cockpit.");
+  document.querySelectorAll("button").forEach(b => b.disabled = true);
+}
+if (q.get("provedor") === "apple") document.getElementById("apple").style.display = "block";
+
+async function entrar(provedor) {
+  try {
+    msg("Abrindo o login...");
+    const r = await signInWithPopup(auth, provedor);
+    const refresh = r.user.refreshToken;
+    msg("Pronto! Voltando ao programa...");
+    location.href = `http://127.0.0.1:${porta}/entrar?estado=${encodeURIComponent(estado)}&refresh=${encodeURIComponent(refresh)}`;
+  } catch (e) {
+    msg("Não foi possível entrar: " + (e.code || e.message));
+  }
+}
+document.getElementById("google").onclick = () => entrar(new GoogleAuthProvider());
+document.getElementById("apple").onclick = () => { const p = new OAuthProvider("apple.com"); p.addScope("email"); p.addScope("name"); entrar(p); };
+</script>
+</body>
+</html>

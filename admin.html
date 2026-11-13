@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Painel de controle - Nexus Works Digital</title>
+<style>
+  :root{--bg:#050b14;--card:#0b1422;--borda:#243247;--azul:#00dcff;--txt:#e8f0f8;--cinza:#8fa3b8;--ok:#3ddc84;--ruim:#ff6b5e;--aviso:#ffbe28}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,Segoe UI,sans-serif}
+  header{display:flex;align-items:center;gap:12px;padding:14px 22px;border-bottom:1px solid var(--borda);background:#020409}
+  header h1{font-size:18px;margin:0;flex:1}
+  header span{color:var(--cinza);font-size:14px}
+  button{background:#0e2236;color:var(--txt);border:1px solid #2a4a6a;border-radius:10px;padding:8px 14px;font-size:14px;cursor:pointer}
+  button:hover{background:#143152}
+  button.ok{border-color:var(--ok);color:var(--ok)} button.ruim{border-color:var(--ruim);color:var(--ruim)}
+  main{max-width:1100px;margin:0 auto;padding:22px}
+  .centro{min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
+  nav{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+  nav button.on{background:var(--azul);color:#00222a;border-color:var(--azul);font-weight:600}
+  .grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:22px}
+  .num{background:var(--card);border:1px solid var(--borda);border-radius:14px;padding:16px}
+  .num b{display:block;font-size:30px;color:var(--azul)} .num small{color:var(--cinza)}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--borda);border-radius:14px;overflow:hidden;font-size:14px}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #16243a;vertical-align:top}
+  th{color:var(--cinza);font-weight:500;background:#08111d}
+  input[type=search],input[type=text],select,textarea{background:#08111d;border:1px solid var(--borda);color:var(--txt);border-radius:8px;padding:8px 10px;font-size:14px}
+  input[type=search]{width:100%;max-width:340px;margin-bottom:12px}
+  .selo{display:inline-block;padding:2px 10px;border-radius:20px;border:1px solid;font-size:12.5px}
+  .pedido{background:var(--card);border:1px solid var(--borda);border-radius:14px;padding:16px;margin-bottom:12px}
+  .pedido h3{margin:0 0 4px} .pedido p{margin:4px 0;color:var(--cinza);white-space:pre-wrap;word-break:break-word}
+  .acoes{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center}
+  .acoes input{flex:1;min-width:180px}
+  a{color:var(--azul)}
+  .escondido{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <h1>Painel de controle · Nexus Works Digital</h1>
+  <span id="quem"></span>
+  <button id="sair" class="escondido">Sair</button>
+</header>
+<main id="raiz">
+  <div class="centro" id="entrada">
+    <h2>Área do administrador</h2>
+    <p style="color:var(--cinza)">Entre com a conta Google autorizada.</p>
+    <button id="entrar">Entrar com Google</button>
+    <p id="aviso" style="color:var(--ruim)"></p>
+  </div>
+  <div id="painel" class="escondido">
+    <nav>
+      <button data-aba="geral" class="on">Visão geral</button>
+      <button data-aba="usuarios">Usuários</button>
+      <button data-aba="pedidos">Pedidos de painel <span id="contaPend"></span></button>
+    </nav>
+    <section id="geral"></section>
+    <section id="usuarios" class="escondido"></section>
+    <section id="pedidos" class="escondido"></section>
+  </div>
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+// mesmos e-mails das regras do Firestore (as regras e que realmente protegem os dados)
+const ADMINS = ["cildojuniorbt@gmail.com", "nexusworksdigital@gmail.com"];
+
+const app = initializeApp({
+  apiKey: "AIzaSyAoatrFI3jaP6ZDgTTPJH_faAvHXOj1-Dk",
+  authDomain: "nexus-cockpit-b870a.firebaseapp.com",
+  projectId: "nexus-cockpit-b870a"
+});
+const auth = getAuth(app), db = getFirestore(app);
+const $ = id => document.getElementById(id);
+let usuarios = [], pedidos = [];
+
+function el(tag, props = {}, ...filhos) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) {
+    if (k === "class") e.className = v; else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else if (k === "href") e.setAttribute("href", /^https?:\/\//i.test(v) ? v : "#"); else e[k] = v;
+  }
+  for (const f of filhos) e.append(f instanceof Node ? f : document.createTextNode(f ?? ""));
+  return e;
+}
+const data = t => t && t.toDate ? t.toDate() : null;
+const fmt = d => d ? d.toLocaleString("pt-BR", {dateStyle: "short", timeStyle: "short"}) : "—";
+
+$("entrar").onclick = async () => {
+  $("aviso").textContent = "";
+  try { await signInWithPopup(auth, new GoogleAuthProvider()); }
+  catch (e) { $("aviso").textContent = "Não foi possível entrar: " + (e.code || e.message); }
+};
+$("sair").onclick = () => signOut(auth);
+
+onAuthStateChanged(auth, async u => {
+  const ok = u && u.emailVerified && ADMINS.includes((u.email || "").toLowerCase());
+  $("entrada").classList.toggle("escondido", !!ok);
+  $("painel").classList.toggle("escondido", !ok);
+  $("sair").classList.toggle("escondido", !u);
+  $("quem").textContent = u ? u.email : "";
+  if (u && !ok) { $("aviso").textContent = "Esta conta (" + u.email + ") não tem acesso ao painel."; await signOut(auth); return; }
+  if (ok) carregar();
+});
+
+document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
+  document.querySelectorAll("nav button").forEach(x => x.classList.toggle("on", x === b));
+  for (const s of ["geral", "usuarios", "pedidos"]) $(s).classList.toggle("escondido", s !== b.dataset.aba);
+});
+
+async function carregar() {
+  try {
+    const [u, p] = await Promise.all([getDocs(collection(db, "usuarios")), getDocs(collection(db, "pedidos_painel"))]);
+    usuarios = u.docs.map(d => ({id: d.id, ...d.data()}));
+    pedidos = p.docs.map(d => ({id: d.id, ...d.data()}));
+  } catch (e) {
+    $("geral").replaceChildren(el("p", {style: "color:var(--ruim)"}, "Erro ao ler os dados: " + (e.code || e.message) + ". Confira se o Firestore está criado e as regras publicadas."));
+    return;
+  }
+  desenharGeral(); desenharUsuarios(); desenharPedidos();
+}
+
+function desenharGeral() {
+  const agora = Date.now(), dia = 864e5;
+  const ult = u => (data(u.ultimoAcesso) || 0);
+  const ativos7 = usuarios.filter(u => agora - ult(u) < 7 * dia).length;
+  const novos7 = usuarios.filter(u => data(u.criadoEm) && agora - data(u.criadoEm) < 7 * dia).length;
+  const porPlat = {};
+  usuarios.forEach(u => porPlat[u.plataforma || "?"] = (porPlat[u.plataforma || "?"] || 0) + 1);
+  const pend = pedidos.filter(p => p.status === "pendente").length;
+  const pagos = usuarios.filter(u => u.plano === "pago").length;
+  const caixa = (n, t) => el("div", {class: "num"}, el("b", {}, String(n)), el("small", {}, t));
+  $("geral").replaceChildren(
+    el("div", {class: "grade"},
+      caixa(usuarios.length, "usuários cadastrados"), caixa(ativos7, "ativos nos últimos 7 dias"),
+      caixa(novos7, "novos nos últimos 7 dias"), caixa(pagos, "com plano pago"), caixa(pend, "pedidos de painel pendentes")),
+    el("h3", {}, "Por plataforma"),
+    el("div", {class: "grade"}, ...Object.entries(porPlat).map(([k, v]) => caixa(v, k)))
+  );
+  $("contaPend").textContent = pend ? "(" + pend + ")" : "";
+}
+
+function desenharUsuarios() {
+  const busca = el("input", {type: "search", placeholder: "Buscar por nome ou e-mail"});
+  const corpo = el("tbody");
+  const cab = el("thead", {}, el("tr", {}, ...["Nome", "E-mail", "Plataforma", "Versão", "Criado em", "Último acesso", "Plano"].map(t => el("th", {}, t))));
+  function lista() {
+    const q = busca.value.trim().toLowerCase();
+    corpo.replaceChildren(...usuarios
+      .filter(u => !q || (u.nome || "").toLowerCase().includes(q) || (u.email || "").toLowerCase().includes(q))
+      .sort((a, b) => (data(b.ultimoAcesso) || 0) - (data(a.ultimoAcesso) || 0))
+      .map(u => {
+        const sel = el("select", {onchange: async () => {
+          try { await updateDoc(doc(db, "usuarios", u.id), {plano: sel.value}); u.plano = sel.value; desenharGeral(); }
+          catch (e) { alert("Não foi possível salvar: " + (e.code || e.message)); sel.value = u.plano || "gratuito"; }
+        }}, el("option", {value: "gratuito"}, "Gratuito"), el("option", {value: "pago"}, "Pago"));
+        sel.value = u.plano === "pago" ? "pago" : "gratuito";
+        return el("tr", {}, el("td", {}, u.nome || "—"), el("td", {}, u.email || "—"), el("td", {}, u.plataforma || "—"),
+          el("td", {}, u.versao || "—"), el("td", {}, fmt(data(u.criadoEm))), el("td", {}, fmt(data(u.ultimoAcesso))), el("td", {}, sel));
+      }));
+  }
+  busca.oninput = lista; lista();
+  $("usuarios").replaceChildren(busca, el("table", {}, cab, corpo));
+}
+
+function desenharPedidos() {
+  const cores = {pendente: "var(--aviso)", aprovado: "var(--ok)", recusado: "var(--ruim)"};
+  const ordem = {pendente: 0, aprovado: 1, recusado: 2};
+  const itens = [...pedidos].sort((a, b) => (ordem[a.status] ?? 3) - (ordem[b.status] ?? 3) || (data(b.criadoEm) || 0) - (data(a.criadoEm) || 0));
+  if (!itens.length) { $("pedidos").replaceChildren(el("p", {style: "color:var(--cinza)"}, "Nenhum pedido ainda.")); return; }
+  $("pedidos").replaceChildren(...itens.map(p => {
+    const resp = el("input", {type: "text", placeholder: "Mensagem para o usuário (opcional)", value: p.resposta || ""});
+    async function decidir(status) {
+      try {
+        await updateDoc(doc(db, "pedidos_painel", p.id), {status, resposta: resp.value.trim(), decididoEm: serverTimestamp()});
+        p.status = status; p.resposta = resp.value.trim(); desenharPedidos(); desenharGeral();
+      } catch (e) { alert("Não foi possível salvar: " + (e.code || e.message)); }
+    }
+    const link = p.link ? el("a", {href: p.link, target: "_blank", rel: "noopener noreferrer"}, "Abrir o painel enviado") : el("span", {}, "sem link");
+    return el("div", {class: "pedido"},
+      el("h3", {}, p.painel || "(sem nome)", " ", el("span", {class: "selo", style: "color:" + (cores[p.status] || "var(--cinza)")}, p.status || "?")),
+      el("p", {}, (p.nome || "—") + " · " + (p.email || "—") + " · " + fmt(data(p.criadoEm))),
+      el("p", {}, p.descricao || ""),
+      el("p", {}, link),
+      el("div", {class: "acoes"}, resp,
+        el("button", {class: "ok", onclick: () => decidir("aprovado")}, "Aprovar"),
+        el("button", {class: "ruim", onclick: () => decidir("recusado")}, "Recusar")));
+  }));
+}
+</script>
+</body>
+</html>
