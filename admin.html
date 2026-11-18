@@ -53,10 +53,12 @@
     <nav>
       <button data-aba="geral" class="on">Visão geral</button>
       <button data-aba="usuarios">Usuários</button>
+      <button data-aba="cupons">Cupons</button>
       <button data-aba="pedidos">Pedidos de painel <span id="contaPend"></span></button>
     </nav>
     <section id="geral"></section>
     <section id="usuarios" class="escondido"></section>
+    <section id="cupons" class="escondido"></section>
     <section id="pedidos" class="escondido"></section>
   </div>
 </main>
@@ -64,7 +66,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-import { getFirestore, collection, getDocs, doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, setDoc, deleteDoc, serverTimestamp, Timestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 // mesmos e-mails das regras do Firestore (as regras e que realmente protegem os dados)
 const ADMINS = ["cildojuniorbt@gmail.com", "nexusworksdigital@gmail.com"];
@@ -76,7 +78,7 @@ const app = initializeApp({
 });
 const auth = getAuth(app), db = getFirestore(app);
 const $ = id => document.getElementById(id);
-let usuarios = [], pedidos = [];
+let usuarios = [], pedidos = [], cupons = [], licencas = [];
 
 function el(tag, props = {}, ...filhos) {
   const e = document.createElement(tag);
@@ -109,19 +111,22 @@ onAuthStateChanged(auth, async u => {
 
 document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
   document.querySelectorAll("nav button").forEach(x => x.classList.toggle("on", x === b));
-  for (const s of ["geral", "usuarios", "pedidos"]) $(s).classList.toggle("escondido", s !== b.dataset.aba);
+  for (const s of ["geral", "usuarios", "cupons", "pedidos"]) $(s).classList.toggle("escondido", s !== b.dataset.aba);
 });
 
 async function carregar() {
   try {
-    const [u, p] = await Promise.all([getDocs(collection(db, "usuarios")), getDocs(collection(db, "pedidos_painel"))]);
+    const [u, p, cu, li] = await Promise.all([getDocs(collection(db, "usuarios")), getDocs(collection(db, "pedidos_painel")),
+      getDocs(collection(db, "cupons")), getDocs(collection(db, "licencas"))]);
+    cupons = cu.docs.map(d => ({id: d.id, ...d.data()}));
+    licencas = li.docs.map(d => ({id: d.id, ...d.data()}));
     usuarios = u.docs.map(d => ({id: d.id, ...d.data()}));
     pedidos = p.docs.map(d => ({id: d.id, ...d.data()}));
   } catch (e) {
     $("geral").replaceChildren(el("p", {style: "color:var(--ruim)"}, "Erro ao ler os dados: " + (e.code || e.message) + ". Confira se o Firestore está criado e as regras publicadas."));
     return;
   }
-  desenharGeral(); desenharUsuarios(); desenharPedidos();
+  desenharGeral(); desenharUsuarios(); desenharCupons(); desenharPedidos();
 }
 
 function desenharGeral() {
@@ -165,6 +170,58 @@ function desenharUsuarios() {
   }
   busca.oninput = lista; lista();
   $("usuarios").replaceChildren(busca, el("table", {}, cab, corpo));
+}
+
+function codigoNovo() {
+  const L = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789", b = crypto.getRandomValues(new Uint8Array(8));
+  return "NEXUS-" + Array.from(b, x => L[x % L.length]).join("");
+}
+
+function desenharCupons() {
+  const quem = el("input", {type: "text", placeholder: "Para quem é (ex.: João, amigo)"});
+  const dias = el("input", {type: "number", value: 30, min: 1, max: 365, style: "width:90px"});
+  const venc = el("input", {type: "number", value: 30, min: 1, max: 365, style: "width:90px"});
+  async function criar() {
+    const codigo = codigoNovo(), d = Math.max(1, Math.min(365, parseInt(dias.value) || 30)), v = Math.max(1, Math.min(365, parseInt(venc.value) || 30));
+    try {
+      await setDoc(doc(db, "cupons", codigo), {
+        dias: d, destinatario: quem.value.trim(), usado: false, cancelado: false,
+        criadoEm: serverTimestamp(), validoAte: Timestamp.fromMillis(Date.now() + v * 864e5)
+      });
+      cupons.push({id: codigo, dias: d, destinatario: quem.value.trim(), usado: false, criadoEm: Timestamp.now(), validoAte: Timestamp.fromMillis(Date.now() + v * 864e5)});
+      quem.value = ""; desenharCupons();
+      try { await navigator.clipboard.writeText(codigo); alert("Cupom criado e copiado: " + codigo); } catch { alert("Cupom criado: " + codigo); }
+    } catch (e) { alert("Não foi possível criar: " + (e.code || e.message)); }
+  }
+  const novo = el("div", {class: "acoes"}, quem, el("label", {}, "Acesso (dias) "), dias, el("label", {}, " Vale para resgatar por (dias) "), venc,
+    el("button", {class: "ok", onclick: criar}, "Criar cupom"));
+  const nome = uid => { const u = usuarios.find(x => x.id === uid); return u ? (u.nome || u.email || uid) : (uid || "—"); };
+  const agora = Date.now();
+  const linhas = [...cupons].sort((a, b) => (data(b.criadoEm) || 0) - (data(a.criadoEm) || 0)).map(c => {
+    const vencido = !c.usado && data(c.validoAte) && data(c.validoAte) < agora;
+    const estado = c.usado ? "usado" : vencido ? "vencido" : "disponível";
+    return el("tr", {}, el("td", {}, c.id), el("td", {}, c.destinatario || "—"), el("td", {}, String(c.dias || 30) + " dias"),
+      el("td", {style: "color:" + (c.usado ? "var(--ok)" : vencido ? "var(--ruim)" : "var(--aviso)")}, estado),
+      el("td", {}, c.usado ? nome(c.usadoPor) + " · " + fmt(data(c.usadoEm)) : "até " + fmt(data(c.validoAte))),
+      el("td", {}, el("button", {class: "ruim", onclick: async () => {
+        if (!confirm("Apagar o cupom " + c.id + "? (quem já usou continua com o acesso)")) return;
+        try { await deleteDoc(doc(db, "cupons", c.id)); cupons = cupons.filter(x => x.id !== c.id); desenharCupons(); }
+        catch (e) { alert("Não foi possível apagar: " + (e.code || e.message)); }
+      }}, "Apagar")));
+  });
+  const tabCup = el("table", {}, el("thead", {}, el("tr", {}, ...["Código", "Para", "Acesso", "Estado", "Uso / validade", ""].map(t => el("th", {}, t)))), el("tbody", {}, ...linhas));
+  const lic = [...licencas].sort((a, b) => (data(b.expiraEm) || 0) - (data(a.expiraEm) || 0)).map(l => {
+    const ativa = data(l.expiraEm) && data(l.expiraEm) > agora;
+    return el("tr", {}, el("td", {}, nome(l.id)), el("td", {}, l.codigo || "(liberado por você)"), el("td", {}, fmt(data(l.expiraEm))),
+      el("td", {style: "color:" + (ativa ? "var(--ok)" : "var(--ruim)")}, ativa ? "ativo" : "expirado"),
+      el("td", {}, el("button", {class: "ruim", onclick: async () => {
+        if (!confirm("Remover o acesso de " + nome(l.id) + "?")) return;
+        try { await deleteDoc(doc(db, "licencas", l.id)); licencas = licencas.filter(x => x.id !== l.id); desenharCupons(); }
+        catch (e) { alert("Não foi possível remover: " + (e.code || e.message)); }
+      }}, "Remover acesso")));
+  });
+  const tabLic = el("table", {}, el("thead", {}, el("tr", {}, ...["Usuário", "Cupom", "Expira em", "Estado", ""].map(t => el("th", {}, t)))), el("tbody", {}, ...lic));
+  $("cupons").replaceChildren(el("h3", {}, "Novo cupom de cortesia"), novo, el("h3", {}, "Cupons"), tabCup, el("h3", {}, "Acessos liberados"), tabLic);
 }
 
 function desenharPedidos() {
