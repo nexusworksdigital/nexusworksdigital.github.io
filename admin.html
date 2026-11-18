@@ -6,39 +6,59 @@
 <meta name="robots" content="noindex,nofollow">
 <title>Painel de controle - Nexus Works Digital</title>
 <style>
-  :root{--bg:#050b14;--card:#0b1422;--borda:#243247;--azul:#00dcff;--txt:#e8f0f8;--cinza:#8fa3b8;--ok:#3ddc84;--ruim:#ff6b5e;--aviso:#ffbe28}
+  :root{--bg:#050b14;--card:#0b1422;--card2:#0e1a2c;--borda:#223249;--azul:#00dcff;--roxo:#a83dff;--txt:#e8f0f8;--cinza:#8fa3b8;--ok:#3ddc84;--ruim:#ff6b5e;--aviso:#ffbe28}
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,Segoe UI,sans-serif}
-  header{display:flex;align-items:center;gap:12px;padding:14px 22px;border-bottom:1px solid var(--borda);background:#020409}
-  header h1{font-size:18px;margin:0;flex:1}
-  header span{color:var(--cinza);font-size:14px}
-  button{background:#0e2236;color:var(--txt);border:1px solid #2a4a6a;border-radius:10px;padding:8px 14px;font-size:14px;cursor:pointer}
+  body{margin:0;background:radial-gradient(900px 420px at 10% -10%,rgba(0,220,255,.10),transparent 60%),radial-gradient(800px 400px at 100% 0,rgba(168,61,255,.10),transparent 60%),var(--bg);color:var(--txt);font-family:system-ui,Segoe UI,sans-serif;min-height:100vh}
+  header{display:flex;align-items:center;gap:12px;padding:14px 22px;border-bottom:1px solid var(--borda);background:rgba(2,4,9,.85);backdrop-filter:blur(8px);position:sticky;top:0;z-index:5}
+  header h1{font-size:17px;margin:0;flex:1;letter-spacing:.3px}
+  header h1 b{color:var(--azul)}
+  header span{color:var(--cinza);font-size:13px}
+  button{background:#0e2236;color:var(--txt);border:1px solid #2a4a6a;border-radius:10px;padding:8px 14px;font-size:14px;cursor:pointer;transition:.15s}
   button:hover{background:#143152}
-  button.ok{border-color:var(--ok);color:var(--ok)} button.ruim{border-color:var(--ruim);color:var(--ruim)}
-  main{max-width:1100px;margin:0 auto;padding:22px}
+  button.ok{border-color:var(--ok);color:var(--ok)} button.ruim{border-color:var(--ruim);color:var(--ruim)} button.peq{padding:4px 10px;font-size:12.5px;border-radius:8px}
+  button.cheio{background:linear-gradient(135deg,#00dcff,#7a5cff);color:#04121e;border:0;font-weight:700}
+  main{max-width:1180px;margin:0 auto;padding:22px}
   .centro{min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
-  nav{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
-  nav button.on{background:var(--azul);color:#00222a;border-color:var(--azul);font-weight:600}
-  .grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:22px}
-  .num{background:var(--card);border:1px solid var(--borda);border-radius:14px;padding:16px}
+  nav{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+  nav button{border-radius:999px;padding:9px 18px}
+  nav button.on{background:linear-gradient(135deg,#00dcff,#7a5cff);color:#04121e;border-color:transparent;font-weight:700}
+  h3{margin:22px 0 10px;font-size:15px;color:var(--azul);letter-spacing:.4px}
+  .grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;margin-bottom:8px}
+  .num{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--borda);border-radius:16px;padding:16px}
   .num b{display:block;font-size:30px;color:var(--azul)} .num small{color:var(--cinza)}
-  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--borda);border-radius:14px;overflow:hidden;font-size:14px}
-  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #16243a;vertical-align:top}
-  th{color:var(--cinza);font-weight:500;background:#08111d}
-  input[type=search],input[type=text],select,textarea{background:#08111d;border:1px solid var(--borda);color:var(--txt);border-radius:8px;padding:8px 10px;font-size:14px}
-  input[type=search]{width:100%;max-width:340px;margin-bottom:12px}
-  .selo{display:inline-block;padding:2px 10px;border-radius:20px;border:1px solid;font-size:12.5px}
-  .pedido{background:var(--card);border:1px solid var(--borda);border-radius:14px;padding:16px;margin-bottom:12px}
-  .pedido h3{margin:0 0 4px} .pedido p{margin:4px 0;color:var(--cinza);white-space:pre-wrap;word-break:break-word}
+  .num.roxo b{color:var(--roxo)} .num.ok b{color:var(--ok)} .num.aviso b{color:var(--aviso)}
+  .painel{background:var(--card);border:1px solid var(--borda);border-radius:16px;padding:16px;margin-bottom:12px}
+  .duas{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}
+  .barras{display:flex;align-items:flex-end;gap:5px;height:150px;padding-top:8px}
+  .barras div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:10.5px;color:var(--cinza);gap:3px}
+  .barras i{display:block;width:100%;border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,#00dcff,#7a5cff);min-height:2px}
+  .hbar{display:flex;align-items:center;gap:10px;margin:7px 0;font-size:13.5px}
+  .hbar span{width:90px;color:var(--cinza)} .hbar i{display:block;height:12px;border-radius:8px;background:linear-gradient(90deg,#00dcff,#7a5cff)} .hbar em{font-style:normal;color:var(--txt)}
+  .tabela{overflow-x:auto;border-radius:14px;border:1px solid var(--borda)}
+  table{width:100%;border-collapse:collapse;background:var(--card);font-size:14px;min-width:640px}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #16243a;vertical-align:middle}
+  th{color:var(--cinza);font-weight:500;background:#08111d;white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  input[type=search],input[type=text],input[type=number],select,textarea{background:#08111d;border:1px solid var(--borda);color:var(--txt);border-radius:8px;padding:8px 10px;font-size:14px;font-family:inherit}
+  textarea{width:100%;min-height:80px}
+  .selo{display:inline-block;padding:2px 10px;border-radius:20px;border:1px solid;font-size:12.5px;white-space:nowrap}
+  .pedido{background:var(--card);border:1px solid var(--borda);border-radius:16px;padding:16px;margin-bottom:12px}
+  .pedido h3{margin:0 0 4px;color:var(--txt)} .pedido p{margin:4px 0;color:var(--cinza);white-space:pre-wrap;word-break:break-word}
   .acoes{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center}
-  .acoes input{flex:1;min-width:180px}
+  .acoes input[type=text]{flex:1;min-width:160px}
+  .barra-topo{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+  .barra-topo input[type=search]{flex:1;min-width:200px;max-width:340px}
+  .vazio{color:var(--cinza);padding:10px 2px}
+  .nota{color:var(--cinza);font-size:13px;margin:6px 0 0}
+  .cod{font-family:ui-monospace,Consolas,monospace;letter-spacing:.5px}
   a{color:var(--azul)}
   .escondido{display:none!important}
+  @media(max-width:640px){main{padding:14px}header{padding:12px 14px}}
 </style>
 </head>
 <body>
 <header>
-  <h1>Painel de controle · Nexus Works Digital</h1>
+  <h1><b>NEXUS</b> · Painel de controle</h1>
   <span id="quem"></span>
   <button id="sair" class="escondido">Sair</button>
 </header>
@@ -46,19 +66,21 @@
   <div class="centro" id="entrada">
     <h2>Área do administrador</h2>
     <p style="color:var(--cinza)">Entre com a conta Google autorizada.</p>
-    <button id="entrar">Entrar com Google</button>
+    <button id="entrar" class="cheio">Entrar com Google</button>
     <p id="aviso" style="color:var(--ruim)"></p>
   </div>
   <div id="painel" class="escondido">
     <nav>
-      <button data-aba="geral" class="on">Visão geral</button>
+      <button data-aba="geral" class="on">Resumo</button>
       <button data-aba="usuarios">Usuários</button>
       <button data-aba="cupons">Cupons</button>
+      <button data-aba="avisos">Avisos</button>
       <button data-aba="pedidos">Pedidos de painel <span id="contaPend"></span></button>
     </nav>
     <section id="geral"></section>
     <section id="usuarios" class="escondido"></section>
     <section id="cupons" class="escondido"></section>
+    <section id="avisos" class="escondido"></section>
     <section id="pedidos" class="escondido"></section>
   </div>
 </main>
@@ -78,7 +100,8 @@ const app = initializeApp({
 });
 const auth = getAuth(app), db = getFirestore(app);
 const $ = id => document.getElementById(id);
-let usuarios = [], pedidos = [], cupons = [], licencas = [];
+const DIA = 864e5;
+let usuarios = [], pedidos = [], cupons = [], licencas = [], avisos = [];
 
 function el(tag, props = {}, ...filhos) {
   const e = document.createElement(tag);
@@ -91,6 +114,11 @@ function el(tag, props = {}, ...filhos) {
 }
 const data = t => t && t.toDate ? t.toDate() : null;
 const fmt = d => d ? d.toLocaleString("pt-BR", {dateStyle: "short", timeStyle: "short"}) : "—";
+const fmtD = d => d ? d.toLocaleDateString("pt-BR") : "—";
+const erro = e => alert("Não foi possível salvar: " + (e.code || e.message));
+const nomeDe = uid => { const u = usuarios.find(x => x.id === uid); return u ? (u.nome || u.email || uid) : (uid || "—"); };
+const licDe = uid => licencas.find(l => l.id === uid);
+const ativa = l => l && data(l.expiraEm) && data(l.expiraEm) > Date.now();
 
 $("entrar").onclick = async () => {
   $("aviso").textContent = "";
@@ -109,140 +137,260 @@ onAuthStateChanged(auth, async u => {
   if (ok) carregar();
 });
 
+const ABAS = ["geral", "usuarios", "cupons", "avisos", "pedidos"];
 document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
   document.querySelectorAll("nav button").forEach(x => x.classList.toggle("on", x === b));
-  for (const s of ["geral", "usuarios", "cupons", "pedidos"]) $(s).classList.toggle("escondido", s !== b.dataset.aba);
+  for (const s of ABAS) $(s).classList.toggle("escondido", s !== b.dataset.aba);
 });
 
+async function ler(nome) {
+  try { const r = await getDocs(collection(db, nome)); return r.docs.map(d => ({id: d.id, ...d.data()})); }
+  catch (e) { if (nome === "avisos") return []; throw e; }
+}
 async function carregar() {
   try {
-    const [u, p, cu, li] = await Promise.all([getDocs(collection(db, "usuarios")), getDocs(collection(db, "pedidos_painel")),
-      getDocs(collection(db, "cupons")), getDocs(collection(db, "licencas"))]);
-    cupons = cu.docs.map(d => ({id: d.id, ...d.data()}));
-    licencas = li.docs.map(d => ({id: d.id, ...d.data()}));
-    usuarios = u.docs.map(d => ({id: d.id, ...d.data()}));
-    pedidos = p.docs.map(d => ({id: d.id, ...d.data()}));
+    [usuarios, pedidos, cupons, licencas, avisos] = await Promise.all(["usuarios", "pedidos_painel", "cupons", "licencas", "avisos"].map(ler));
   } catch (e) {
-    $("geral").replaceChildren(el("p", {style: "color:var(--ruim)"}, "Erro ao ler os dados: " + (e.code || e.message) + ". Confira se o Firestore está criado e as regras publicadas."));
+    $("geral").replaceChildren(el("p", {style: "color:var(--ruim)"}, "Erro ao ler os dados: " + (e.code || e.message) + ". Confira se as regras do Firestore foram publicadas."));
     return;
   }
-  desenharGeral(); desenharUsuarios(); desenharCupons(); desenharPedidos();
+  desenharTudo();
 }
+function desenharTudo() { desenharGeral(); desenharUsuarios(); desenharCupons(); desenharAvisos(); desenharPedidos(); }
 
+// ---------------------------------------------------------------- Resumo
 function desenharGeral() {
-  const agora = Date.now(), dia = 864e5;
+  const agora = Date.now();
   const ult = u => (data(u.ultimoAcesso) || 0);
-  const ativos7 = usuarios.filter(u => agora - ult(u) < 7 * dia).length;
-  const novos7 = usuarios.filter(u => data(u.criadoEm) && agora - data(u.criadoEm) < 7 * dia).length;
+  const ativos7 = usuarios.filter(u => agora - ult(u) < 7 * DIA).length;
+  const novos7 = usuarios.filter(u => data(u.criadoEm) && agora - data(u.criadoEm) < 7 * DIA).length;
+  const pend = pedidos.filter(p => p.status === "pendente").length;
+  const licAtivas = licencas.filter(ativa).length;
+  const cupLivres = cupons.filter(c => !c.usado && !c.cancelado && !(data(c.validoAte) && data(c.validoAte) < agora)).length;
+  const cupUsados = cupons.filter(c => c.usado).length;
+  const caixa = (n, t, cls = "") => el("div", {class: "num " + cls}, el("b", {}, String(n)), el("small", {}, t));
+
+  // novos usuarios nos ultimos 14 dias
+  const dias = [];
+  for (let i = 13; i >= 0; i--) { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - i); dias.push(d); }
+  const cont = dias.map(d => usuarios.filter(u => { const c = data(u.criadoEm); return c && c >= d && c < new Date(+d + DIA); }).length);
+  const max = Math.max(1, ...cont);
+  const barras = el("div", {class: "barras"}, ...dias.map((d, i) =>
+    el("div", {title: d.toLocaleDateString("pt-BR") + ": " + cont[i]}, el("span", {}, cont[i] ? String(cont[i]) : ""),
+      el("i", {style: "height:" + Math.round(cont[i] / max * 100) + "%"}), el("span", {}, String(d.getDate())))));
+
   const porPlat = {};
   usuarios.forEach(u => porPlat[u.plataforma || "?"] = (porPlat[u.plataforma || "?"] || 0) + 1);
-  const pend = pedidos.filter(p => p.status === "pendente").length;
-  const pagos = usuarios.filter(u => u.plano === "pago").length;
-  const caixa = (n, t) => el("div", {class: "num"}, el("b", {}, String(n)), el("small", {}, t));
+  const maxP = Math.max(1, ...Object.values(porPlat));
+  const plat = Object.entries(porPlat).sort((a, b) => b[1] - a[1]).map(([k, v]) =>
+    el("div", {class: "hbar"}, el("span", {}, k), el("i", {style: "width:" + Math.max(4, Math.round(v / maxP * 100)) + "%"}), el("em", {}, String(v))));
+
+  const vencem = licencas.filter(l => ativa(l) && data(l.expiraEm) - agora < 7 * DIA).sort((a, b) => data(a.expiraEm) - data(b.expiraEm));
+  const listaV = vencem.length
+    ? el("div", {}, ...vencem.map(l => el("div", {class: "hbar"}, el("span", {style: "width:auto;flex:1;color:var(--txt)"}, nomeDe(l.id)), el("em", {}, "vence " + fmtD(data(l.expiraEm))))))
+    : el("p", {class: "vazio"}, "Nenhum acesso vencendo nos próximos 7 dias.");
+
   $("geral").replaceChildren(
     el("div", {class: "grade"},
-      caixa(usuarios.length, "usuários cadastrados"), caixa(ativos7, "ativos nos últimos 7 dias"),
-      caixa(novos7, "novos nos últimos 7 dias"), caixa(pagos, "com plano pago"), caixa(pend, "pedidos de painel pendentes")),
-    el("h3", {}, "Por plataforma"),
-    el("div", {class: "grade"}, ...Object.entries(porPlat).map(([k, v]) => caixa(v, k)))
-  );
+      caixa(usuarios.length, "usuários cadastrados"), caixa(ativos7, "ativos nos últimos 7 dias"), caixa(novos7, "novos nos últimos 7 dias"),
+      caixa(licAtivas, "acessos liberados agora", "ok"), caixa(cupLivres, "cupons disponíveis", "roxo"), caixa(cupUsados, "cupons já usados", "roxo"),
+      caixa(pend, "pedidos de painel pendentes", "aviso")),
+    el("div", {class: "duas"},
+      el("div", {class: "painel"}, el("h3", {style: "margin-top:0"}, "Novos usuários (14 dias)"), barras),
+      el("div", {class: "painel"}, el("h3", {style: "margin-top:0"}, "Por plataforma"), ...(plat.length ? plat : [el("p", {class: "vazio"}, "Sem dados ainda.")]))),
+    el("div", {class: "painel"}, el("h3", {style: "margin-top:0"}, "Acessos que vencem em 7 dias"), listaV));
   $("contaPend").textContent = pend ? "(" + pend + ")" : "";
+}
+
+// ---------------------------------------------------------------- Usuários
+function csv() {
+  const L = [["nome", "email", "plataforma", "versao", "criado_em", "ultimo_acesso", "plano", "acesso_ate", "bloqueado"]];
+  usuarios.forEach(u => L.push([u.nome, u.email, u.plataforma, u.versao, fmt(data(u.criadoEm)), fmt(data(u.ultimoAcesso)), u.plano || "gratuito",
+    ativa(licDe(u.id)) ? fmtD(data(licDe(u.id).expiraEm)) : "", u.bloqueado ? "sim" : ""]));
+  const txt = "﻿" + L.map(r => r.map(c => '"' + String(c ?? "").replace(/"/g, '""') + '"').join(";")).join("\r\n");
+  const a = el("a", {href: "#"}); a.href = URL.createObjectURL(new Blob([txt], {type: "text/csv;charset=utf-8"}));
+  a.download = "usuarios_nexus.csv"; a.click();
+}
+
+async function estender(u, dias) {
+  const atual = licDe(u.id), base = ativa(atual) ? data(atual.expiraEm).getTime() : Date.now();
+  const fim = Timestamp.fromMillis(base + dias * DIA);
+  try {
+    await setDoc(doc(db, "licencas", u.id), {codigo: atual?.codigo || "", criadoEm: atual?.criadoEm || serverTimestamp(), expiraEm: fim});
+    const novo = {id: u.id, codigo: atual?.codigo || "", criadoEm: atual?.criadoEm || Timestamp.now(), expiraEm: fim};
+    licencas = licencas.filter(l => l.id !== u.id).concat(novo); desenharTudo();
+  } catch (e) { erro(e); }
 }
 
 function desenharUsuarios() {
   const busca = el("input", {type: "search", placeholder: "Buscar por nome ou e-mail"});
+  const filtro = el("select", {}, el("option", {value: ""}, "Todos"), el("option", {value: "ativo"}, "Com acesso liberado"),
+    el("option", {value: "bloq"}, "Bloqueados"), el("option", {value: "pago"}, "Plano pago"));
   const corpo = el("tbody");
-  const cab = el("thead", {}, el("tr", {}, ...["Nome", "E-mail", "Plataforma", "Versão", "Criado em", "Último acesso", "Plano"].map(t => el("th", {}, t))));
+  const cab = el("thead", {}, el("tr", {}, ...["Nome", "E-mail", "Plataforma", "Último acesso", "Plano", "Acesso até", "Ações"].map(t => el("th", {}, t))));
   function lista() {
-    const q = busca.value.trim().toLowerCase();
-    corpo.replaceChildren(...usuarios
+    const q = busca.value.trim().toLowerCase(), f = filtro.value;
+    const itens = usuarios
       .filter(u => !q || (u.nome || "").toLowerCase().includes(q) || (u.email || "").toLowerCase().includes(q))
-      .sort((a, b) => (data(b.ultimoAcesso) || 0) - (data(a.ultimoAcesso) || 0))
-      .map(u => {
-        const sel = el("select", {onchange: async () => {
-          try { await updateDoc(doc(db, "usuarios", u.id), {plano: sel.value}); u.plano = sel.value; desenharGeral(); }
-          catch (e) { alert("Não foi possível salvar: " + (e.code || e.message)); sel.value = u.plano || "gratuito"; }
-        }}, el("option", {value: "gratuito"}, "Gratuito"), el("option", {value: "pago"}, "Pago"));
-        sel.value = u.plano === "pago" ? "pago" : "gratuito";
-        return el("tr", {}, el("td", {}, u.nome || "—"), el("td", {}, u.email || "—"), el("td", {}, u.plataforma || "—"),
-          el("td", {}, u.versao || "—"), el("td", {}, fmt(data(u.criadoEm))), el("td", {}, fmt(data(u.ultimoAcesso))), el("td", {}, sel));
-      }));
+      .filter(u => !f || (f === "ativo" && ativa(licDe(u.id))) || (f === "bloq" && u.bloqueado) || (f === "pago" && u.plano === "pago"))
+      .sort((a, b) => (data(b.ultimoAcesso) || 0) - (data(a.ultimoAcesso) || 0));
+    if (!itens.length) { corpo.replaceChildren(el("tr", {}, el("td", {colSpan: 7, class: "vazio"}, "Nenhum usuário encontrado."))); return; }
+    corpo.replaceChildren(...itens.map(u => {
+      const sel = el("select", {onchange: async () => {
+        try { await updateDoc(doc(db, "usuarios", u.id), {plano: sel.value}); u.plano = sel.value; desenharGeral(); }
+        catch (e) { erro(e); sel.value = u.plano || "gratuito"; }
+      }}, el("option", {value: "gratuito"}, "Gratuito"), el("option", {value: "pago"}, "Pago"));
+      sel.value = u.plano === "pago" ? "pago" : "gratuito";
+      const l = licDe(u.id);
+      const bloq = el("button", {class: "peq " + (u.bloqueado ? "ok" : "ruim"), onclick: async () => {
+        if (!u.bloqueado && !confirm("Bloquear " + (u.nome || u.email) + "?")) return;
+        try { await updateDoc(doc(db, "usuarios", u.id), {bloqueado: !u.bloqueado}); u.bloqueado = !u.bloqueado; desenharUsuarios(); }
+        catch (e) { erro(e); }
+      }}, u.bloqueado ? "Desbloquear" : "Bloquear");
+      return el("tr", {}, el("td", {}, u.nome || "—", u.bloqueado ? el("span", {class: "selo", style: "color:var(--ruim);margin-left:6px"}, "bloqueado") : ""),
+        el("td", {}, u.email || "—"), el("td", {}, u.plataforma || "—"), el("td", {}, fmt(data(u.ultimoAcesso))), el("td", {}, sel),
+        el("td", {style: "color:" + (ativa(l) ? "var(--ok)" : "var(--cinza)")}, ativa(l) ? fmtD(data(l.expiraEm)) : "—"),
+        el("td", {}, el("div", {class: "acoes", style: "margin:0"}, el("button", {class: "peq ok", onclick: () => estender(u, 30)}, "+30 dias"), bloq)));
+    }));
   }
-  busca.oninput = lista; lista();
-  $("usuarios").replaceChildren(busca, el("table", {}, cab, corpo));
+  busca.oninput = lista; filtro.onchange = lista; lista();
+  $("usuarios").replaceChildren(
+    el("div", {class: "barra-topo"}, busca, filtro, el("button", {onclick: csv}, "Exportar lista (CSV)")),
+    el("div", {class: "tabela"}, el("table", {}, cab, corpo)),
+    el("p", {class: "nota"}, "“+30 dias” libera (ou estende) o acesso da pessoa sem precisar de cupom. “Bloquear” marca a conta como bloqueada."));
 }
 
+// ---------------------------------------------------------------- Cupons
 function codigoNovo() {
   const L = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789", b = crypto.getRandomValues(new Uint8Array(8));
   return "NEXUS-" + Array.from(b, x => L[x % L.length]).join("");
 }
+const descDesc = c => c.tipo === "desconto" ? (c.descontoTipo === "valor" ? "R$ " + Number(c.valor).toFixed(2).replace(".", ",") : Number(c.valor) + "%") + " de desconto" : (c.dias || 30) + " dias de acesso";
 
 function desenharCupons() {
+  const tipo = el("select", {}, el("option", {value: "cortesia"}, "Cortesia (dias de acesso)"), el("option", {value: "desconto"}, "Desconto (para a cobrança)"));
   const quem = el("input", {type: "text", placeholder: "Para quem é (ex.: João, amigo)"});
-  const dias = el("input", {type: "number", value: 30, min: 1, max: 365, style: "width:90px"});
-  const venc = el("input", {type: "number", value: 30, min: 1, max: 365, style: "width:90px"});
+  const dias = el("input", {type: "number", value: 30, min: 1, max: 365, style: "width:80px"});
+  const dTipo = el("select", {}, el("option", {value: "percentual"}, "%"), el("option", {value: "valor"}, "R$"));
+  const dVal = el("input", {type: "number", value: 20, min: 1, step: "0.01", style: "width:90px"});
+  const usos = el("input", {type: "number", value: 1, min: 1, max: 1000, style: "width:80px"});
+  const venc = el("input", {type: "number", value: 30, min: 1, max: 365, style: "width:80px"});
+  const qtd = el("input", {type: "number", value: 1, min: 1, max: 50, style: "width:70px"});
+  const cx = (t, ...x) => el("label", {class: "nota", style: "display:flex;gap:6px;align-items:center"}, t, ...x);
+  const gCort = el("div", {class: "acoes"}, cx("Dias de acesso", dias));
+  const gDesc = el("div", {class: "acoes escondido"}, cx("Desconto", dTipo, dVal), cx("Limite de usos", usos));
+  tipo.onchange = () => { gCort.classList.toggle("escondido", tipo.value !== "cortesia"); gDesc.classList.toggle("escondido", tipo.value !== "desconto"); };
+
   async function criar() {
-    const codigo = codigoNovo(), d = Math.max(1, Math.min(365, parseInt(dias.value) || 30)), v = Math.max(1, Math.min(365, parseInt(venc.value) || 30));
+    const n = Math.max(1, Math.min(50, parseInt(qtd.value) || 1)), v = Math.max(1, Math.min(365, parseInt(venc.value) || 30));
+    const criados = [];
     try {
-      await setDoc(doc(db, "cupons", codigo), {
-        dias: d, destinatario: quem.value.trim(), usado: false, cancelado: false,
-        criadoEm: serverTimestamp(), validoAte: Timestamp.fromMillis(Date.now() + v * 864e5)
-      });
-      cupons.push({id: codigo, dias: d, destinatario: quem.value.trim(), usado: false, criadoEm: Timestamp.now(), validoAte: Timestamp.fromMillis(Date.now() + v * 864e5)});
-      quem.value = ""; desenharCupons();
-      try { await navigator.clipboard.writeText(codigo); alert("Cupom criado e copiado: " + codigo); } catch { alert("Cupom criado: " + codigo); }
-    } catch (e) { alert("Não foi possível criar: " + (e.code || e.message)); }
+      for (let i = 0; i < n; i++) {
+        const codigo = codigoNovo();
+        const d = {tipo: tipo.value, destinatario: quem.value.trim(), usado: false, cancelado: false, criadoEm: serverTimestamp(),
+          validoAte: Timestamp.fromMillis(Date.now() + v * DIA)};
+        if (tipo.value === "cortesia") d.dias = Math.max(1, Math.min(365, parseInt(dias.value) || 30));
+        else { d.descontoTipo = dTipo.value; d.valor = Math.max(0.01, parseFloat(dVal.value) || 10); d.usosMax = Math.max(1, parseInt(usos.value) || 1); d.usos = 0; d.dias = 0; }
+        await setDoc(doc(db, "cupons", codigo), d);
+        cupons.push({id: codigo, ...d, criadoEm: Timestamp.now()}); criados.push(codigo);
+      }
+      quem.value = ""; desenharCupons(); desenharGeral();
+      const lista = criados.join("\n");
+      try { await navigator.clipboard.writeText(lista); alert((n > 1 ? n + " cupons criados e copiados:\n" : "Cupom criado e copiado: ") + lista); }
+      catch { alert("Criado(s):\n" + lista); }
+    } catch (e) { erro(e); desenharCupons(); }
   }
-  const novo = el("div", {class: "acoes"}, quem, el("label", {}, "Acesso (dias) "), dias, el("label", {}, " Vale para resgatar por (dias) "), venc,
-    el("button", {class: "ok", onclick: criar}, "Criar cupom"));
-  const nome = uid => { const u = usuarios.find(x => x.id === uid); return u ? (u.nome || u.email || uid) : (uid || "—"); };
+
+  const novo = el("div", {class: "painel"}, el("h3", {style: "margin-top:0"}, "Novo cupom"),
+    el("div", {class: "acoes"}, tipo, quem),
+    gCort, gDesc,
+    el("div", {class: "acoes"}, cx("Vale para resgatar por (dias)", venc), cx("Quantidade de cupons", qtd), el("button", {class: "cheio", onclick: criar}, "Criar cupom")),
+    el("p", {class: "nota"}, "Cortesia: a pessoa digita o código no app (Conta › Tenho um cupom) e ganha os dias de acesso. Desconto: fica guardado e será aplicado quando a cobrança (Pix / Mercado Pago) estiver ligada."));
+
   const agora = Date.now();
-  const linhas = [...cupons].sort((a, b) => (data(b.criadoEm) || 0) - (data(a.criadoEm) || 0)).map(c => {
-    const vencido = !c.usado && data(c.validoAte) && data(c.validoAte) < agora;
-    const estado = c.usado ? "usado" : vencido ? "vencido" : "disponível";
-    return el("tr", {}, el("td", {}, c.id), el("td", {}, c.destinatario || "—"), el("td", {}, String(c.dias || 30) + " dias"),
-      el("td", {style: "color:" + (c.usado ? "var(--ok)" : vencido ? "var(--ruim)" : "var(--aviso)")}, estado),
-      el("td", {}, c.usado ? nome(c.usadoPor) + " · " + fmt(data(c.usadoEm)) : "até " + fmt(data(c.validoAte))),
-      el("td", {}, el("button", {class: "ruim", onclick: async () => {
-        if (!confirm("Apagar o cupom " + c.id + "? (quem já usou continua com o acesso)")) return;
-        try { await deleteDoc(doc(db, "cupons", c.id)); cupons = cupons.filter(x => x.id !== c.id); desenharCupons(); }
-        catch (e) { alert("Não foi possível apagar: " + (e.code || e.message)); }
-      }}, "Apagar")));
-  });
-  const tabCup = el("table", {}, el("thead", {}, el("tr", {}, ...["Código", "Para", "Acesso", "Estado", "Uso / validade", ""].map(t => el("th", {}, t)))), el("tbody", {}, ...linhas));
+  const filtro = el("select", {}, el("option", {value: ""}, "Todos"), el("option", {value: "cortesia"}, "Cortesia"), el("option", {value: "desconto"}, "Desconto"));
+  const corpo = el("tbody");
+  function lista() {
+    const f = filtro.value;
+    const itens = [...cupons].filter(c => !f || (c.tipo || "cortesia") === f).sort((a, b) => (data(b.criadoEm) || 0) - (data(a.criadoEm) || 0));
+    if (!itens.length) { corpo.replaceChildren(el("tr", {}, el("td", {colSpan: 6, class: "vazio"}, "Nenhum cupom ainda."))); return; }
+    corpo.replaceChildren(...itens.map(c => {
+      const desc = c.tipo === "desconto";
+      const vencido = !c.usado && data(c.validoAte) && data(c.validoAte) < agora;
+      const estado = c.cancelado ? "cancelado" : (desc ? ((c.usos || 0) >= (c.usosMax || 1) ? "esgotado" : "disponível") : c.usado ? "usado" : vencido ? "vencido" : "disponível");
+      const cor = estado === "disponível" ? "var(--aviso)" : estado === "usado" ? "var(--ok)" : "var(--ruim)";
+      return el("tr", {}, el("td", {class: "cod"}, c.id), el("td", {}, c.destinatario || "—"),
+        el("td", {}, desc ? "Desconto" : "Cortesia", el("br"), el("small", {style: "color:var(--cinza)"}, descDesc(c))),
+        el("td", {}, el("span", {class: "selo", style: "color:" + cor}, estado)),
+        el("td", {}, c.usado && !desc ? nomeDe(c.usadoPor) + " · " + fmt(data(c.usadoEm)) : desc ? (c.usos || 0) + "/" + (c.usosMax || 1) + " usos · até " + fmtD(data(c.validoAte)) : "até " + fmtD(data(c.validoAte))),
+        el("td", {}, el("div", {class: "acoes", style: "margin:0"},
+          el("button", {class: "peq", onclick: async () => { try { await navigator.clipboard.writeText(c.id); } catch { prompt("Código:", c.id); } }}, "Copiar"),
+          el("button", {class: "peq ruim", onclick: async () => {
+            if (!confirm("Apagar o cupom " + c.id + "? (quem já usou continua com o acesso)")) return;
+            try { await deleteDoc(doc(db, "cupons", c.id)); cupons = cupons.filter(x => x.id !== c.id); desenharCupons(); desenharGeral(); } catch (e) { erro(e); }
+          }}, "Apagar"))));
+    }));
+  }
+  filtro.onchange = lista; lista();
+  const tabCup = el("div", {class: "tabela"}, el("table", {}, el("thead", {}, el("tr", {}, ...["Código", "Para", "Tipo", "Estado", "Uso / validade", ""].map(t => el("th", {}, t)))), corpo));
+
   const lic = [...licencas].sort((a, b) => (data(b.expiraEm) || 0) - (data(a.expiraEm) || 0)).map(l => {
-    const ativa = data(l.expiraEm) && data(l.expiraEm) > agora;
-    return el("tr", {}, el("td", {}, nome(l.id)), el("td", {}, l.codigo || "(liberado por você)"), el("td", {}, fmt(data(l.expiraEm))),
-      el("td", {style: "color:" + (ativa ? "var(--ok)" : "var(--ruim)")}, ativa ? "ativo" : "expirado"),
-      el("td", {}, el("button", {class: "ruim", onclick: async () => {
-        if (!confirm("Remover o acesso de " + nome(l.id) + "?")) return;
-        try { await deleteDoc(doc(db, "licencas", l.id)); licencas = licencas.filter(x => x.id !== l.id); desenharCupons(); }
-        catch (e) { alert("Não foi possível remover: " + (e.code || e.message)); }
+    const at = ativa(l);
+    return el("tr", {}, el("td", {}, nomeDe(l.id)), el("td", {class: "cod"}, l.codigo || "(liberado por você)"), el("td", {}, fmt(data(l.expiraEm))),
+      el("td", {}, el("span", {class: "selo", style: "color:" + (at ? "var(--ok)" : "var(--ruim)")}, at ? "ativo" : "expirado")),
+      el("td", {}, el("button", {class: "peq ruim", onclick: async () => {
+        if (!confirm("Remover o acesso de " + nomeDe(l.id) + "?")) return;
+        try { await deleteDoc(doc(db, "licencas", l.id)); licencas = licencas.filter(x => x.id !== l.id); desenharTudo(); } catch (e) { erro(e); }
       }}, "Remover acesso")));
   });
-  const tabLic = el("table", {}, el("thead", {}, el("tr", {}, ...["Usuário", "Cupom", "Expira em", "Estado", ""].map(t => el("th", {}, t)))), el("tbody", {}, ...lic));
-  $("cupons").replaceChildren(el("h3", {}, "Novo cupom de cortesia"), novo, el("h3", {}, "Cupons"), tabCup, el("h3", {}, "Acessos liberados"), tabLic);
+  const tabLic = el("div", {class: "tabela"}, el("table", {}, el("thead", {}, el("tr", {}, ...["Usuário", "Cupom", "Expira em", "Estado", ""].map(t => el("th", {}, t)))),
+    el("tbody", {}, ...(lic.length ? lic : [el("tr", {}, el("td", {colSpan: 5, class: "vazio"}, "Nenhum acesso liberado ainda."))]))));
+  $("cupons").replaceChildren(novo, el("div", {class: "barra-topo"}, el("h3", {style: "margin:0;flex:1"}, "Cupons"), filtro), tabCup, el("h3", {}, "Acessos liberados"), tabLic);
 }
 
+// ---------------------------------------------------------------- Avisos
+function desenharAvisos() {
+  const tit = el("input", {type: "text", placeholder: "Título do aviso", style: "width:100%"});
+  const txt = el("textarea", {placeholder: "Texto que aparece no app"});
+  const pub = el("select", {}, el("option", {value: "todos"}, "Para todos"), el("option", {value: "liberados"}, "Só quem tem acesso liberado"));
+  async function criar() {
+    if (!tit.value.trim() || !txt.value.trim()) { alert("Preencha o título e o texto."); return; }
+    const id = "a" + Date.now().toString(36);
+    const d = {titulo: tit.value.trim(), texto: txt.value.trim(), publico: pub.value, ativo: true, criadoEm: serverTimestamp()};
+    try { await setDoc(doc(db, "avisos", id), d); avisos.push({id, ...d, criadoEm: Timestamp.now()}); desenharAvisos(); } catch (e) { erro(e); }
+  }
+  const novo = el("div", {class: "painel"}, el("h3", {style: "margin-top:0"}, "Novo aviso"), tit, el("div", {style: "height:8px"}), txt,
+    el("div", {class: "acoes"}, pub, el("button", {class: "cheio", onclick: criar}, "Publicar aviso")),
+    el("p", {class: "nota"}, "Os avisos ficam guardados aqui. O app mostrará os avisos ativos na próxima atualização dele."));
+  const itens = [...avisos].sort((a, b) => (data(b.criadoEm) || 0) - (data(a.criadoEm) || 0)).map(a =>
+    el("div", {class: "pedido"},
+      el("h3", {}, a.titulo, " ", el("span", {class: "selo", style: "color:" + (a.ativo ? "var(--ok)" : "var(--cinza)")}, a.ativo ? "ativo" : "desligado")),
+      el("p", {}, a.texto), el("p", {}, (a.publico === "liberados" ? "Só quem tem acesso liberado" : "Para todos") + " · " + fmt(data(a.criadoEm))),
+      el("div", {class: "acoes"},
+        el("button", {class: "peq", onclick: async () => { try { await updateDoc(doc(db, "avisos", a.id), {ativo: !a.ativo}); a.ativo = !a.ativo; desenharAvisos(); } catch (e) { erro(e); } }}, a.ativo ? "Desligar" : "Ligar"),
+        el("button", {class: "peq ruim", onclick: async () => { if (!confirm("Apagar este aviso?")) return; try { await deleteDoc(doc(db, "avisos", a.id)); avisos = avisos.filter(x => x.id !== a.id); desenharAvisos(); } catch (e) { erro(e); } }}, "Apagar"))));
+  $("avisos").replaceChildren(novo, ...(itens.length ? itens : [el("p", {class: "vazio"}, "Nenhum aviso ainda.")]));
+}
+
+// ---------------------------------------------------------------- Pedidos de painel
 function desenharPedidos() {
   const cores = {pendente: "var(--aviso)", aprovado: "var(--ok)", recusado: "var(--ruim)"};
   const ordem = {pendente: 0, aprovado: 1, recusado: 2};
   const itens = [...pedidos].sort((a, b) => (ordem[a.status] ?? 3) - (ordem[b.status] ?? 3) || (data(b.criadoEm) || 0) - (data(a.criadoEm) || 0));
-  if (!itens.length) { $("pedidos").replaceChildren(el("p", {style: "color:var(--cinza)"}, "Nenhum pedido ainda.")); return; }
+  if (!itens.length) { $("pedidos").replaceChildren(el("p", {class: "vazio"}, "Nenhum pedido ainda.")); return; }
   $("pedidos").replaceChildren(...itens.map(p => {
     const resp = el("input", {type: "text", placeholder: "Mensagem para o usuário (opcional)", value: p.resposta || ""});
     async function decidir(status) {
       try {
         await updateDoc(doc(db, "pedidos_painel", p.id), {status, resposta: resp.value.trim(), decididoEm: serverTimestamp()});
         p.status = status; p.resposta = resp.value.trim(); desenharPedidos(); desenharGeral();
-      } catch (e) { alert("Não foi possível salvar: " + (e.code || e.message)); }
+      } catch (e) { erro(e); }
     }
     const link = p.link ? el("a", {href: p.link, target: "_blank", rel: "noopener noreferrer"}, "Abrir o painel enviado") : el("span", {}, "sem link");
     return el("div", {class: "pedido"},
       el("h3", {}, p.painel || "(sem nome)", " ", el("span", {class: "selo", style: "color:" + (cores[p.status] || "var(--cinza)")}, p.status || "?")),
       el("p", {}, (p.nome || "—") + " · " + (p.email || "—") + " · " + fmt(data(p.criadoEm))),
-      el("p", {}, p.descricao || ""),
-      el("p", {}, link),
+      el("p", {}, p.descricao || ""), el("p", {}, link),
       el("div", {class: "acoes"}, resp,
         el("button", {class: "ok", onclick: () => decidir("aprovado")}, "Aprovar"),
         el("button", {class: "ruim", onclick: () => decidir("recusado")}, "Recusar")));
